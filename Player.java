@@ -11,6 +11,7 @@ public class Player
     // instance variables - replace the example below with your own
     private int hp;
     private Location currentPosition;
+    private Item currentItem;
 
     /**
      * Constructor for objects of class Player
@@ -44,5 +45,12 @@ public class Player
     public void setCurrentPosition(Location location)
     {
         currentPosition = location;
+    }
+    
+    public boolean getItem(String itemName)
+    {
+        currentItem = currentPosition.getItem(itemName);
+        this.currentPosition.removeItem(itemName);
+        return currentItem != null;
     }
 }

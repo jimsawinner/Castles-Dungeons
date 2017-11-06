@@ -10,4 +10,6 @@ comment3.params=
 comment3.target=Location\ getCurrentPosition()
 comment4.params=location
 comment4.target=void\ setCurrentPosition(Location)
-numComments=5
+comment5.params=itemName
+comment5.target=boolean\ getItem(java.lang.String)
+numComments=6

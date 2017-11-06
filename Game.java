@@ -128,6 +128,16 @@ public class Game
         else if (commandWord == CommandWord.QUIT) {
             wantToQuit = quit(command);
         }
+        else if (commandWord == CommandWord.PICK) {
+            takeItem(command);
+        }
+        else if (commandWord == CommandWord.LOOK) {
+            try{
+                System.out.println(player1.getCurrentPosition().getItemString());;
+            }catch(Exception e){
+                System.out.println("Error! Could not getItem().getName()");
+            }
+        }
         // else command not recognised.
         return wantToQuit;
     }
@@ -167,6 +177,23 @@ public class Game
             System.out.println(player1.getCurrentPosition().getLongDescription());
         }else{
             System.out.println("There is no door!");
+        }
+    }
+    
+    private void takeItem(Command command)
+    {
+        if(!command.hasSecondWord()) {
+            // if there is no second word, we don't know what to take...
+            System.out.println("Take what?");
+            return;
+        }
+        
+        String itemName = command.getSecondWord();
+        
+        if(player1.getItem(itemName)){
+            System.out.println("Picked up "+itemName);
+        }else{
+            System.out.println("No " +itemName+ " is here.");
         }
     }
 
