@@ -1,9 +1,10 @@
 
 /**
- * Write a description of class Item here.
+ * Item class will be responsible for actions pertaining
+ * to and Item in-game object.
  *
- * @author (your name)
- * @version (a version number or a date)
+ * @author Jamie Dixon
+ * @version v0.02
  */
 public class Item
 {

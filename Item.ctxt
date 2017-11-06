@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=Item
-comment0.text=\n\ Write\ a\ description\ of\ class\ Item\ here.\n\n\ @author\ (your\ name)\n\ @version\ (a\ version\ number\ or\ a\ date)\n
+comment0.text=\n\ Item\ class\ will\ be\ responsible\ for\ actions\ pertaining\n\ to\ and\ Item\ in-game\ object.\n\n\ @author\ Jamie\ Dixon\n\ @version\ v0.02\n
 comment1.params=name
 comment1.target=Item(java.lang.String)
 comment1.text=\n\ Constructor\ for\ objects\ of\ class\ Item\n
