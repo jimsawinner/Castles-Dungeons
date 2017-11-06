@@ -13,6 +13,7 @@ public enum CommandWord
     QUIT("quit"), 
     HELP("help"), 
     PICK("take"), 
+    DROP("drop"), 
     LOOK("look"), 
     UNKNOWN("?");
     

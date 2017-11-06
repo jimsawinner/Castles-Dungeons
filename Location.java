@@ -108,6 +108,14 @@ public class Location
         return exits.get(direction);
     }
     
+    public boolean hasItem(String k){
+        return items.containsKey(k);
+    }
+    
+    public boolean hasItems(){
+        return !items.isEmpty();
+    }    
+    
     public void addItem(String name, Item item)
     {
         items.put(name,item);

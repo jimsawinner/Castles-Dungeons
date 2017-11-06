@@ -131,6 +131,9 @@ public class Game
         else if (commandWord == CommandWord.PICK) {
             takeItem(command);
         }
+        else if (commandWord == CommandWord.DROP) {
+            dropItem(command);
+        }
         else if (commandWord == CommandWord.LOOK) {
             try{
                 System.out.println(player1.getCurrentPosition().getItemString());;
@@ -190,10 +193,27 @@ public class Game
         
         String itemName = command.getSecondWord();
         
-        if(player1.getItem(itemName)){
+        if(player1.takeItem(itemName)){
             System.out.println("Picked up "+itemName);
         }else{
             System.out.println("No " +itemName+ " is here.");
+        }
+    }
+    
+    private void dropItem(Command command)
+    {
+        if(!command.hasSecondWord()) {
+            // if there is no second word, we don't know what to take...
+            System.out.println("Drop what?");
+            return;
+        }
+        
+        String itemName = command.getSecondWord();
+        
+        if(player1.dropItem(itemName)){
+            System.out.println("Dropped "+itemName);
+        }else{
+            System.out.println("No " +itemName+ " in inventory.");
         }
     }
 
