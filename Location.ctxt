@@ -1,0 +1,22 @@
+#BlueJ class context
+comment0.target=Location
+comment0.text=\n\ Class\ Room\ -\ a\ room\ in\ an\ adventure\ game.\n\n\ This\ class\ is\ part\ of\ the\ "World\ of\ Zuul"\ application.\ \n\ "World\ of\ Zuul"\ is\ a\ very\ simple,\ text\ based\ adventure\ game.\ \ \n\n\ A\ "Room"\ represents\ one\ location\ in\ the\ scenery\ of\ the\ game.\ \ It\ is\ \n\ connected\ to\ other\ rooms\ via\ exits.\ \ For\ each\ existing\ exit,\ the\ room\ \n\ stores\ a\ reference\ to\ the\ neighboring\ room.\n\ \n\ @author\ \ Michael\ Kolling\ and\ David\ J.\ Barnes\n\ @version\ 2008.03.30\n
+comment1.params=description
+comment1.target=Location(java.lang.String)
+comment1.text=\n\ Create\ a\ room\ described\ "description".\ Initially,\ it\ has\n\ no\ exits.\ "description"\ is\ something\ like\ "a\ kitchen"\ or\n\ "an\ open\ court\ yard".\n\ @param\ description\ The\ room's\ description.\n
+comment2.params=direction\ neighbor
+comment2.target=void\ setExit(java.lang.String,\ Location)
+comment2.text=\n\ Define\ an\ exit\ from\ this\ room.\n\ @param\ direction\ The\ direction\ of\ the\ exit.\n\ @param\ neighbor\ \ The\ location\ to\ which\ the\ exit\ leads.\n
+comment3.params=
+comment3.target=java.lang.String\ getShortDescription()
+comment3.text=\n\ @return\ The\ short\ description\ of\ the\ room\n\ (the\ one\ that\ was\ defined\ in\ the\ constructor).\n
+comment4.params=
+comment4.target=java.lang.String\ getLongDescription()
+comment4.text=\n\ Return\ a\ description\ of\ the\ room\ in\ the\ form\:\n\ \ \ \ \ You\ are\ in\ the\ kitchen.\n\ \ \ \ \ Exits\:\ north\ west\n\ @return\ A\ long\ description\ of\ this\ location\n
+comment5.params=
+comment5.target=java.lang.String\ getExitString()
+comment5.text=\n\ Return\ a\ string\ describing\ the\ location's\ exits,\ for\ example\n\ "Exits\:\ north\ west".\n\ @return\ Details\ of\ the\ location's\ exits.\n
+comment6.params=direction
+comment6.target=Location\ getExit(java.lang.String)
+comment6.text=\n\ Return\ the\ location\ that\ is\ reached\ if\ we\ go\ from\ this\ room\ in\ direction\n\ "direction".\ If\ there\ is\ no\ room\ in\ that\ direction,\ return\ null.\n\ @param\ direction\ The\ exit's\ direction.\n\ @return\ The\ room\ in\ the\ given\ direction.\n
+numComments=7

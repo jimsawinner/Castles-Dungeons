@@ -1,3 +1,5 @@
+import java.util.HashMap;
+
 /**
  *  This class is the main class of the "World of Zuul" application. 
  *  "World of Zuul" is a very simple, text based adventure game.  Users 
@@ -18,13 +20,17 @@
 public class Game 
 {
     private Parser parser;
-    private Room currentRoom;
+    //private Room currentRoom;
+    private Player player1;
+    private HashMap<String, Location> map;
         
     /**
      * Create the game and initialise its internal map.
      */
     public Game() 
     {
+        player1 = new Player();
+        map = new HashMap<String, Location>();
         createRooms();
         parser = new Parser();
     }
@@ -33,15 +39,15 @@ public class Game
      * Create all the rooms and link their exits together.
      */
     private void createRooms()
-    {
-        Room outside, theatre, pub, lab, office;
+    {   
+        Location outside, theatre, pub, lab, office;
       
         // create the rooms
-        outside = new Room("outside the main entrance of the university");
-        theatre = new Room("in a lecture theatre");
-        pub = new Room("in the campus pub");
-        lab = new Room("in a computing lab");
-        office = new Room("in the computing admin office");
+        outside = new Location("outside the main entrance of the university");
+        theatre = new Location("in a lecture theatre");
+        pub = new Location("in the campus pub");
+        lab = new Location("in a computing lab");
+        office = new Location("in the computing admin office");
         
         // initialise room exits
         outside.setExit("east", theatre);
@@ -56,8 +62,14 @@ public class Game
         lab.setExit("east", office);
 
         office.setExit("west", lab);
+        
+        map.put("outside", outside);
+        map.put("theatre", theatre);
+        map.put("pub", pub);
+        map.put("lab", lab);
+        map.put("office", office);
 
-        currentRoom = outside;  // start game outside
+        player1.setCurrentPosition(map.get("outside"));  // start game outside
     }
 
     /**
@@ -88,7 +100,7 @@ public class Game
         System.out.println("World of Zuul is a new, incredibly boring adventure game.");
         System.out.println("Type '" + CommandWord.HELP + "' if you need help.");
         System.out.println();
-        System.out.println(currentRoom.getLongDescription());
+        System.out.println(player1.getCurrentPosition().getLongDescription());
     }
 
     /**
@@ -149,16 +161,12 @@ public class Game
         }
 
         String direction = command.getSecondWord();
-
-        // Try to leave current room.
-        Room nextRoom = currentRoom.getExit(direction);
-
-        if (nextRoom == null) {
+        
+        if(player1.move(direction)){
+            System.out.println("Moved");
+            System.out.println(player1.getCurrentPosition().getLongDescription());
+        }else{
             System.out.println("There is no door!");
-        }
-        else {
-            currentRoom = nextRoom;
-            System.out.println(currentRoom.getLongDescription());
         }
     }
 

@@ -16,10 +16,10 @@ import java.util.Iterator;
  * @version 2008.03.30
  */
 
-public class Room 
+public class Location 
 {
     private String description;
-    private HashMap<String, Room> exits;        // stores exits of this room.
+    private HashMap<String, Location> exits;        // stores exits of this room.
 
     /**
      * Create a room described "description". Initially, it has
@@ -27,18 +27,18 @@ public class Room
      * "an open court yard".
      * @param description The room's description.
      */
-    public Room(String description) 
+    public Location(String description) 
     {
         this.description = description;
-        exits = new HashMap<String, Room>();
+        exits = new HashMap<String, Location>();
     }
 
     /**
      * Define an exit from this room.
      * @param direction The direction of the exit.
-     * @param neighbor  The room to which the exit leads.
+     * @param neighbor  The location to which the exit leads.
      */
-    public void setExit(String direction, Room neighbor) 
+    public void setExit(String direction, Location neighbor) 
     {
         exits.put(direction, neighbor);
     }
@@ -56,7 +56,7 @@ public class Room
      * Return a description of the room in the form:
      *     You are in the kitchen.
      *     Exits: north west
-     * @return A long description of this room
+     * @return A long description of this location
      */
     public String getLongDescription()
     {
@@ -64,9 +64,9 @@ public class Room
     }
 
     /**
-     * Return a string describing the room's exits, for example
+     * Return a string describing the location's exits, for example
      * "Exits: north west".
-     * @return Details of the room's exits.
+     * @return Details of the location's exits.
      */
     private String getExitString()
     {
@@ -79,12 +79,12 @@ public class Room
     }
 
     /**
-     * Return the room that is reached if we go from this room in direction
+     * Return the location that is reached if we go from this room in direction
      * "direction". If there is no room in that direction, return null.
      * @param direction The exit's direction.
      * @return The room in the given direction.
      */
-    public Room getExit(String direction) 
+    public Location getExit(String direction) 
     {
         return exits.get(direction);
     }
