@@ -89,7 +89,7 @@ public class GameMap
         lab.setExit("north", outside);
         lab.setExit("east", office);
 
-        office.setExit("west", lab);
+        //office.setExit("west", lab);
         
         map.put("outside", outside);
         map.put("theatre", theatre);
