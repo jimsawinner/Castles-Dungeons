@@ -1,10 +1,16 @@
 #BlueJ class context
 comment0.target=Item
 comment0.text=\n\ Item\ class\ will\ be\ responsible\ for\ actions\ pertaining\n\ to\ and\ Item\ in-game\ object.\n\n\ @author\ Jamie\ Dixon\n\ @version\ v0.02\n
-comment1.params=name
-comment1.target=Item(java.lang.String)
+comment1.params=name\ hp\ damagePoints
+comment1.target=Item(java.lang.String,\ int,\ int)
 comment1.text=\n\ Constructor\ for\ objects\ of\ class\ Item\n
 comment2.params=
 comment2.target=java.lang.String\ getName()
 comment2.text=\n\ An\ example\ of\ a\ method\ -\ replace\ this\ comment\ with\ your\ own\n\n\ @param\ \ y\ \ a\ sample\ parameter\ for\ a\ method\n\ @return\ \ \ \ the\ sum\ of\ x\ and\ y\n
-numComments=3
+comment3.params=
+comment3.target=int\ getHitPoints()
+comment3.text=\n\ getHitPoints\ returns\ the\ hitpoints\ that\ this\ item\ is\ worth\n\ \n\ @return\ \ the\ items\ hit\ points\ value\n
+comment4.params=
+comment4.target=int\ getDamagePoints()
+comment4.text=\n\ getDamagePoints\ returns\ the\ damage\ points\ that\ this\ item\ can\ deal\n\ \n\ @return\ and\ integer\ value\ for\ the\ amount\ of\ damage\ this\ item\ can\ do\n
+numComments=5

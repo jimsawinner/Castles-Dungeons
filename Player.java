@@ -1,4 +1,6 @@
 import java.util.HashMap;
+import java.util.Set;
+import java.awt.Point;
 
 /**
  * Player class - will be responsible for handling
@@ -9,22 +11,30 @@ import java.util.HashMap;
  */
 public class Player
 {
-    // instance variables - replace the example below with your own
-    private int hp;
-    private Location currentPosition;
-    //private Item currentItem;
-    private HashMap<String, Item> items;
+    private Location currentPosition;   // the players current position
+    private HashMap<String, Item> inventory;    // collection of items
+    private int hp; // the players health points
+    private int maxStorage;
 
     /**
      * Constructor for objects of class Player
+     * 
+     * Sets the players hitpoints 
+     * and prepares an inventory array
      */
     public Player()
     {
-        // initialise instance variables
-        hp = 100;
-        items = new HashMap<String, Item>();
+        hp = 100; // players hitpoints
+        inventory = new HashMap<String, Item>(); // new empty hashmap for inventory
+        maxStorage = 1;
     }
     
+    /**
+     * Move - player moves to a new location
+     * 
+     * @params  String  direction
+     * @return  true if the move was successful otherwise false
+     */
     public boolean move(String direction)
     {
         // Try to leave current room.
@@ -40,44 +50,80 @@ public class Player
         return true;
     }
     
+    /**
+     * getCurrentPosition returns the players current position as a location
+     * 
+     * @return  Location    the players current location object
+     */
     public Location getCurrentPosition()
     {
         return currentPosition;
     }
     
+    /**
+     * setCurrentPosition method
+     * 
+     * Sets the players current location (brute force compared to move)
+     * 
+     * @param   Location    a location object to set as the players current position
+     */
     public void setCurrentPosition(Location location)
     {
         currentPosition = location;
     }
     
+    /**
+     * Return a string describing the players inventory, for example
+     * "Inventory: health".
+     * 
+     * @return Details of the players inventory
+     */
+    public String getInventoryString()
+    {
+        if(!hasItems()){
+            return "Inventory Empty";
+        }
+        
+        String returnString = "Inventory:";
+        Set<String> keys = inventory.keySet();
+        for(String item : keys) {
+            returnString += " " + item;
+        }
+        return returnString;
+    }
+    
     public boolean hasItem(String k){
-        return items.containsKey(k);
+        return inventory.containsKey(k);
     }
     
     public boolean hasItems(){
-        return !items.isEmpty();
+        return !inventory.isEmpty();
     }
     
     public void addItem(String name, Item item)
     {
-        items.put(name,item);
+        inventory.put(name,item);
     }
     
     public Item getItem(String name)
     {
-        return items.get(name);
+        return inventory.get(name);
     }
     
     public void removeItem(String name)
     {
-        items.remove(name);
+        inventory.remove(name);
     }
     
     public boolean takeItem(String itemName)
     {
+        if(inventory.size() >= this.maxStorage){
+            return false;
+        }
+        
         if(this.currentPosition.hasItem(itemName)){
             Item thisItem = this.currentPosition.getItem(itemName);
-            items.put(itemName, thisItem);
+            inventory.put(itemName, thisItem);
             this.currentPosition.removeItem(itemName);
             return true;
         }else{
@@ -88,9 +134,9 @@ public class Player
     public boolean dropItem(String itemName)
     {
         if(hasItem(itemName)){
-            Item thisItem = items.get(itemName);
+            Item thisItem = inventory.get(itemName);
             this.currentPosition.addItem(itemName, thisItem);
-            items.remove(itemName);
+            inventory.remove(itemName);
             return true;
         }else{
             return false;

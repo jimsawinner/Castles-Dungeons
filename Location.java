@@ -1,6 +1,7 @@
 import java.util.Set;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Random;
 
 /**
  * Class Room - a room in an adventure game.
@@ -34,7 +35,15 @@ public class Location
         exits = new HashMap<String, Location>();
         items = new HashMap<String, Item>();
         
-        addItem("pistol", new Item("Vintage Pistol"));
+        Random rand = new Random();
+        
+        // Give a 50% chance of this location gaining an item
+        float chance = rand.nextFloat();
+        if (chance <= 0.25f) {
+            addItem("pistol", new Item("Vintage Pistol", 0, 10));
+        } else if (chance <= 0.50f){
+            addItem("health", new Item("Medical Supplies", 0, 50));
+        }
     }
 
     /**
@@ -89,6 +98,10 @@ public class Location
      */
     public String getItemString()
     {
+        if(!hasItems()){
+            return "No Items Here";
+        }
+        
         String returnString = "Items:";
         Set<String> keys = items.keySet();
         for(String item : keys) {

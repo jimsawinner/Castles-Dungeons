@@ -22,7 +22,8 @@ public class Game
     private Parser parser;
     //private Room currentRoom;
     private Player player1;
-    private HashMap<String, Location> map;
+    //private HashMap<String, Location> map;
+    private GameMap map;
         
     /**
      * Create the game and initialise its internal map.
@@ -30,46 +31,10 @@ public class Game
     public Game() 
     {
         player1 = new Player();
-        map = new HashMap<String, Location>();
-        createRooms();
         parser = new Parser();
-    }
-
-    /**
-     * Create all the rooms and link their exits together.
-     */
-    private void createRooms()
-    {   
-        Location outside, theatre, pub, lab, office;
-      
-        // create the rooms
-        outside = new Location("outside the main entrance of the university");
-        theatre = new Location("in a lecture theatre");
-        pub = new Location("in the campus pub");
-        lab = new Location("in a computing lab");
-        office = new Location("in the computing admin office");
+        map = new GameMap();
         
-        // initialise room exits
-        outside.setExit("east", theatre);
-        outside.setExit("south", lab);
-        outside.setExit("west", pub);
-
-        theatre.setExit("west", outside);
-
-        pub.setExit("east", outside);
-
-        lab.setExit("north", outside);
-        lab.setExit("east", office);
-
-        office.setExit("west", lab);
-        
-        map.put("outside", outside);
-        map.put("theatre", theatre);
-        map.put("pub", pub);
-        map.put("lab", lab);
-        map.put("office", office);
-
-        player1.setCurrentPosition(map.get("outside"));  // start game outside
+        player1.setCurrentPosition(map.getLocationByName("outside"));  // start game outside
     }
 
     /**
@@ -123,7 +88,7 @@ public class Game
             printHelp();
         }
         else if (commandWord == CommandWord.GO) {
-            goRoom(command);
+            goToLocation(command);
         }
         else if (commandWord == CommandWord.QUIT) {
             wantToQuit = quit(command);
@@ -135,10 +100,18 @@ public class Game
             dropItem(command);
         }
         else if (commandWord == CommandWord.LOOK) {
-            try{
-                System.out.println(player1.getCurrentPosition().getItemString());;
-            }catch(Exception e){
-                System.out.println("Error! Could not getItem().getName()");
+            if(!command.hasSecondWord()){
+                try{
+                    System.out.println(player1.getCurrentPosition().getItemString());
+                }catch(Exception e){
+                    System.out.println("Error! Could not getItem().getName()");
+                }
+            }else{
+                try{
+                    System.out.println(player1.getInventoryString());
+                }catch(Exception e){
+                    System.out.println("Error! Could not getItem().getName()");
+                }
             }
         }
         // else command not recognised.
@@ -165,7 +138,7 @@ public class Game
      * Try to go to one direction. If there is an exit, enter the new
      * room, otherwise print an error message.
      */
-    private void goRoom(Command command) 
+    private void goToLocation(Command command) 
     {
         if(!command.hasSecondWord()) {
             // if there is no second word, we don't know where to go...

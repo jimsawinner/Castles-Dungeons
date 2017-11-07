@@ -1,0 +1,17 @@
+#BlueJ class context
+comment0.target=GameMap
+comment0.text=\n\ Responsible\ for\ coordinating\ players/locations\n\ around\ a\ 'map'\ object.\n\n\ @author\ Jamie\ Dixon\n\ @version\ v0.03\n
+comment1.params=
+comment1.target=GameMap()
+comment1.text=\n\ Constructor\ for\ objects\ of\ class\ GameMap\n
+comment2.params=
+comment2.target=void\ setupLocations()
+comment2.text=\n\ Create\ all\ the\ rooms\ and\ link\ their\ exits\ together.\n
+comment3.params=point
+comment3.target=Location\ getLocationByPoint(java.awt.Point)
+comment4.params=name
+comment4.target=Location\ getLocationByName(java.lang.String)
+comment5.params=y
+comment5.target=int\ sampleMethod(int)
+comment5.text=\n\ An\ example\ of\ a\ method\ -\ replace\ this\ comment\ with\ your\ own\n\n\ @param\ \ y\ \ a\ sample\ parameter\ for\ a\ method\n\ @return\ \ \ \ the\ sum\ of\ x\ and\ y\n
+numComments=6
