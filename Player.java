@@ -32,6 +32,7 @@ public class Player
     /**
      * Move - player moves to a new location
      * 
+     * @since v0.02
      * @params  String  direction
      * @return  true if the move was successful otherwise false
      */
@@ -92,29 +93,66 @@ public class Player
         return returnString;
     }
     
+    /**
+     * hasItem checks if the player has an item with
+     * particular key in inventory
+     * 
+     * @param   String  k the items key
+     * @return  true if the player has the item otherwise false
+     */
     public boolean hasItem(String k){
         return inventory.containsKey(k);
     }
     
+    /**
+     * hasItems checks if the player has ANY 
+     * items in the inventory
+     * 
+     * @return  true if the player has >0 items otherwise false
+     */
     public boolean hasItems(){
         return !inventory.isEmpty();
     }
     
+    /**
+     * addItem adds a new item object to the players inventory
+     * 
+     * @params  String name - item key, Item item - item object
+     */
     public void addItem(String name, Item item)
     {
         inventory.put(name,item);
     }
     
+    /**
+     * getItem retrieves an item from the players inventory
+     * 
+     * @params  String name - the name (key) of an item
+     * @return  Item the item object if found
+     */
     public Item getItem(String name)
     {
         return inventory.get(name);
     }
     
+    /**
+     * removeItem removes an item from the players inventory
+     * 
+     * @params  String name - the name (key) of an item
+     */    
     public void removeItem(String name)
     {
         inventory.remove(name);
     }
     
+    /**
+     * takeItem checks if inventory is not already full and
+     * proceeds to add the item to the players inventory and
+     * remove it from the players currentPosition (location)
+     * 
+     * @params  String name - the name (key) of an item
+     * @return  boolean True if success
+     */
     public boolean takeItem(String itemName)
     {
         if(inventory.size() >= this.maxStorage){
@@ -131,6 +169,13 @@ public class Player
         }
     }
     
+    /**
+     * takeItem removes the item from the players inventory
+     * and then adds it to the players currentPosition
+     * 
+     * @params  String name - the name (key) of an item
+     * @return  boolean True if success false otherwise
+     */
     public boolean dropItem(String itemName)
     {
         if(hasItem(itemName)){
