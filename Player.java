@@ -24,7 +24,7 @@ public class Player
      */
     public Player()
     {
-        hp = 100; // players hitpoints
+        hp = 100; // players health points
         inventory = new HashMap<String, Item>(); // new empty hashmap for inventory
         maxStorage = 1;
     }
@@ -40,6 +40,21 @@ public class Player
     {
         // Try to leave current room.
         Location nextLocation = getCurrentPosition().getExit(direction);
+        
+        switch(direction){
+            case "north" :
+                System.out.println("go north");
+                break;
+            case "east" :
+                System.out.println("go east");
+                break;
+            case "west" :
+                System.out.println("go west");
+                break;
+            case "south" :
+                System.out.println("go south");
+                break;
+        }
 
         if (nextLocation == null) {
             return false;
