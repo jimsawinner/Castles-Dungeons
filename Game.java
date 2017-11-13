@@ -1,4 +1,5 @@
 import java.util.HashMap;
+import java.awt.Point;
 
 /**
  *  This class is the main class of the "World of Zuul" application. 
@@ -34,7 +35,7 @@ public class Game
         parser = new Parser();
         map = new GameMap();
         
-        player1.setCurrentPosition(map.getLocationByName("outside"));  // start game outside
+        player1.setCurrentPosition(map.getLocationByPoint(new Point(2,-4)));  // start game outside
     }
 
     /**

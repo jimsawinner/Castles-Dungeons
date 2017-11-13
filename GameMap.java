@@ -10,9 +10,7 @@ import java.awt.Point;
  */
 public class GameMap
 {
-    // instance variables - replace the example below with your own
-    private int x;
-    private HashMap<String, Location> map;
+    // instance variables
     private HashMap<Point, Location> coords;
 
     /**
@@ -21,8 +19,6 @@ public class GameMap
     public GameMap()
     {
         // initialise instance variables
-        x = 0;
-        map = new HashMap<String, Location>();
         coords = new HashMap<Point, Location>();
         setupLocations();
     }
@@ -32,91 +28,113 @@ public class GameMap
      */
     private void setupLocations()
     {   
-        Location outside, theatre, pub, lab, office, spaceship;
-        Location sun, mercury, venus, earth, mars, jupiter, saturn, uranus, neptune, pluto;
+        // create new locations for the dungeons and beasts game
         
-        // create the rooms
-        outside = new Location("outside the main entrance of the university");
-        theatre = new Location("in a lecture theatre");
-        pub = new Location("in the campus pub");
-        lab = new Location("in a computing lab");
-        office = new Location("in the computing admin office");
-        spaceship = new Location("a derelict spaceship");
+        // east hall
+        createPointOnMap(1,-2,"in the great hall");        
+        createPointOnMap(1,-1,"in the great hall");
+        createPointOnMap(1,0,"in the great hall");
+        createPointOnMap(1,1,"in the great hall");
+        createPointOnMap(1,2,"in the great hall");
+        createPointOnMap(1,3,"in the great hall");
+        createPointOnMap(1,4,"in the great hall");
+        createPointOnMap(1,5,"in the great hall");
         
-        // create new locations for the space wars game
-        sun = new Location("The sun");
-        mercury = new Location("Mercury");
-        venus = new Location("Venus");
-        earth = new Location("The planet earth");
-        mars = new Location("Mars");
-        jupiter = new Location("Jupiter");
-        saturn = new Location("Saturn");
-        uranus = new Location("Uranus");
-        neptune = new Location("Neptune");
-        pluto = new Location("Pluto");
+        // west hall
+        createPointOnMap(-1,5,"in the great hall");
+        createPointOnMap(-1,4,"in the great hall");
+        createPointOnMap(-1,3,"in the great hall");
+        createPointOnMap(-1,2,"in the great hall");
+        createPointOnMap(-1,1,"in the great hall");
+        createPointOnMap(-1,0,"in the great hall");
+        createPointOnMap(-1,-1,"in the great hall");
+        createPointOnMap(-1,-2,"in the great hall");
         
-        sun.setExit("south", mercury);
-        mercury.setExit("north", sun);
-        
-        mercury.setExit("south", venus);
-        venus.setExit("north", mercury);
-        
-        venus.setExit("south", earth);
-        earth.setExit("north", venus);
-        
-        earth.setExit("south", mars);
-        mars.setExit("north", earth);
-        
-        // initialise room exits
-        outside.setExit("east", theatre);
-        outside.setExit("south", lab);
-        outside.setExit("west", pub);
-        outside.setExit("north", spaceship);
-        
-        spaceship.setExit("south", outside);
-        spaceship.setExit("north", sun);
-        
-        coords.put(new Point(0,0), outside);
-        coords.put(new Point(-1,0), theatre);
-        coords.put(new Point(1,0), pub);
-        coords.put(new Point(0,-1), lab);
-        coords.put(new Point(-1,-1), office);
+        createPointOnMap(0,0,"in a store room");
+        createPointOnMap(0,-2,"standing in the grand entrance");
+        createPointOnMap(0,-3,"standing on the entrance bridge");
+        createPointOnMap(0,-4,"standing at bridge gates");
 
-        theatre.setExit("west", outside);
-
-        pub.setExit("east", outside);
-
-        lab.setExit("north", outside);
-        lab.setExit("east", office);
-
-        //office.setExit("west", lab);
+        createPointOnMap(1,-4,"rummaging through forest");
+        createPointOnMap(2,-4,"rummaging through forest");
+        createPointOnMap(-1,-4,"rummaging through forest");
+        createPointOnMap(-2,-4,"rummaging through forest");
         
-        map.put("outside", outside);
-        map.put("theatre", theatre);
-        map.put("pub", pub);
-        map.put("lab", lab);
-        map.put("office", office);
+        // west tunnel & guard room
+        createPointOnMap(-2,-1,"standing in a guard room");
+        createPointOnMap(-3,-1,"creeping up a dark and smelly tunnel");
+        createPointOnMap(-4,-1,"creeping up a dark and smelly tunnel");
+        createPointOnMap(-5,-1,"creeping up a dark and smelly tunnel");
+        createPointOnMap(-5,0,"creeping up a dark and smelly tunnel");
+        createPointOnMap(-5,1,"creeping up a dark and smelly tunnel");
+        createPointOnMap(-5,2,"creeping up a dark and smelly tunnel");
+        createPointOnMap(-5,3,"creeping up a dark and smelly tunnel");
+        createPointOnMap(-5,4,"creeping up a dark and smelly tunnel");
+        createPointOnMap(-5,5,"creeping up a dark and smelly tunnel");
+        
+        // east tunnel & guard room
+        createPointOnMap(2,-1,"standing in a guard room");
+        createPointOnMap(3,-1,"creeping up a dark and smelly tunnel");
+        createPointOnMap(4,-1,"creeping up a dark and smelly tunnel");
+        createPointOnMap(5,-1,"creeping up a dark and smelly tunnel");
+        createPointOnMap(5,0,"creeping up a dark and smelly tunnel");
+        createPointOnMap(5,1,"creeping up a dark and smelly tunnel");
+        createPointOnMap(5,2,"creeping up a dark and smelly tunnel");
+        createPointOnMap(5,3,"creeping up a dark and smelly tunnel");
+        createPointOnMap(5,4,"creeping up a dark and smelly tunnel");
+        createPointOnMap(5,5,"creeping up a dark and smelly tunnel");
+        
+        
+        // Iterate through the coordinates HashMap to check/add exits
+        for (Point key : coords.keySet()) {
+            
+            // if the HashMap contains a key with a point with an x value of this points x value + 1
+            if(coords.containsKey(new Point((int)key.getX()+1,(int)key.getY()))){
+                // there is a location to the east (set an exit?)
+                Point neighbourPoint = new Point((int)key.getX()+1,(int)key.getY());
+                
+                // set exits to the east
+                getLocationByPoint(key).setExit("east", getLocationByPoint(neighbourPoint));
+            }
+            
+            if(coords.containsKey(new Point((int)key.getX()-1,(int)key.getY()))){
+                Point neighbourPoint = new Point((int)key.getX()-1,(int)key.getY());
+                
+                // there is a location to the west (set an exit?)                
+                getLocationByPoint(key).setExit("west", getLocationByPoint(neighbourPoint));
+            }
+            
+            if(coords.containsKey(new Point((int)key.getX(),(int)key.getY()+1))){
+                Point neighbourPoint = new Point((int)key.getX(),(int)key.getY()+1);
+                
+                // there is a location to the north (set an exit?)                
+                getLocationByPoint(key).setExit("north", getLocationByPoint(neighbourPoint));
+            }
+            
+            if(coords.containsKey(new Point((int)key.getX(),(int)key.getY()-1))){
+                Point neighbourPoint = new Point((int)key.getX(),(int)key.getY()-1);
+                
+                // there is a location to the west (set an exit?)                
+                getLocationByPoint(key).setExit("south", getLocationByPoint(neighbourPoint));
+            }
+        }
+    }
+    
+    private boolean createPointOnMap(int xPos, int yPos, String description)
+    {
+        Point thisPoint = new Point(xPos, yPos);
+        
+        if(coords.containsKey(thisPoint)){
+            System.out.println("Position: " +xPos+ "," +yPos+ "taken. Cannot create new: " +description); 
+            return false;
+        }else{
+            coords.put(new Point(xPos,yPos), new Location(description));
+            return true;
+        }
     }
     
     public Location getLocationByPoint(Point point)
     {
         return coords.get(point);
-    }
-    
-    public Location getLocationByName(String name)
-    {
-        return map.get(name);
-    }
-
-    /**
-     * An example of a method - replace this comment with your own
-     *
-     * @param  y  a sample parameter for a method
-     * @return    the sum of x and y
-     */
-    public int sampleMethod(int y)
-    {
-        // put your code here
-        return x + y;
     }
 }
