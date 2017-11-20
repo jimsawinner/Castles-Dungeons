@@ -94,7 +94,7 @@ public class Game
         else if (commandWord == CommandWord.QUIT) {
             wantToQuit = quit(command);
         }
-        else if (commandWord == CommandWord.PICK) {
+     else if (commandWord == CommandWord.PICK) {
             takeItem(command);
         }
         else if (commandWord == CommandWord.DROP) {
@@ -167,10 +167,13 @@ public class Game
         
         String itemName = command.getSecondWord();
         
-        if(player1.takeItem(itemName)){
+        try{
+            player1.takeItem(itemName);
             System.out.println("Picked up "+itemName);
-        }else{
-            System.out.println("No " +itemName+ " is here.");
+        }
+        catch (Exception e){
+            System.out.println("Error Picking up item");
+            System.out.println(e);
         }
     }
     
@@ -205,5 +208,10 @@ public class Game
         else {
             return true;  // signal that we want to quit
         }
+    }
+    
+    public void testProcessCommand(Command command)
+    {
+        processCommand(command);
     }
 }

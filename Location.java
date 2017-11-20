@@ -22,6 +22,7 @@ public class Location
     private String description;
     private HashMap<String, Location> exits;        // stores exits of this room.
     private HashMap<String, Item> items;
+    private HashMap<String, Character> npcs;
 
     /**
      * Create a room described "description". Initially, it has
@@ -34,15 +35,21 @@ public class Location
         this.description = description;
         exits = new HashMap<String, Location>();
         items = new HashMap<String, Item>();
+        npcs = new HashMap<String, Character>();
         
         Random rand = new Random();
         
         // Give a 50% chance of this location gaining an item
         float chance = rand.nextFloat();
         if (chance <= 0.25f) {
-            addItem("pistol", new Item("Vintage Pistol", 0, 10));
+            addItem("ether", new Item("Health  boost.", 0, 10));
         } else if (chance <= 0.50f){
-            addItem("health", new Item("Medical Supplies", 0, 50));
+            addItem("gold coin", new Item("A gold coin.", 0, 50));
+        }
+        
+        chance = rand.nextFloat();
+        if(chance <= 0.10f) {
+            addNPC("Dragon", new Character(CharacterType.DRAGON));
         }
     }
 
@@ -73,7 +80,9 @@ public class Location
      */
     public String getLongDescription()
     {
-        return "You are " + description + ".\n" + getExitString();
+        String locationMessage = "You are " + description + ".\n" + getExitString();
+        return locationMessage;
+        
     }
 
     /**
@@ -121,32 +130,67 @@ public class Location
         return exits.get(direction);
     }
     
+    /**
+     * Checks if an item with specific name exists in location
+     * 
+     * @params String k - the key (name) of the item
+     */
     public boolean hasItem(String k){
         return items.containsKey(k);
     }
     
+    /**
+     * Checks if the location holds any items
+     */
     public boolean hasItems(){
         return !items.isEmpty();
     }    
     
+    /**
+     * Adds an item to the location
+     * 
+     * @params String name, Item item
+     */
     public void addItem(String name, Item item)
     {
         items.put(name,item);
     }
     
+    /**
+     * Gets an item object if it exists in the location
+     * 
+     * @params String name - the name of the item
+     */
     public Item getItem(String name)
     {
         return items.get(name);
     }
     
+    /**
+     * Remove an item object from the items HashMap if exists
+     * 
+     * @params String name - the name of the item
+     */
     public void removeItem(String name)
     {
         items.remove(name);
     }
     
+    /**
+     * 
+     */
     public String getItemName(String name)
     {
         return items.get(name).getName();
+    }
+    
+    /**
+     * Add a non playable character to the location
+     * 
+     */
+    private void addNPC(String name, Character character)
+    {
+        npcs.put(name, character);
     }
 }
 

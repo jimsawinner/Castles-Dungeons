@@ -166,21 +166,21 @@ public class Player
      * remove it from the players currentPosition (location)
      * 
      * @params  String name - the name (key) of an item
-     * @return  boolean True if success
+     * @return  boolean True if success throws a custom InventoryException otherwise
      */
-    public boolean takeItem(String itemName)
+    public boolean takeItem(String itemName) throws InventoryException
     {
         if(inventory.size() >= this.maxStorage){
-            return false;
+            throw new InventoryException("Inventory Full");
         }
         
-        if(this.currentPosition.hasItem(itemName)){
+        if(!this.currentPosition.hasItem(itemName)){
+            throw new InventoryException("No Item Located");
+        }else{
             Item thisItem = this.currentPosition.getItem(itemName);
             inventory.put(itemName, thisItem);
             this.currentPosition.removeItem(itemName);
             return true;
-        }else{
-            return false;
         }
     }
     

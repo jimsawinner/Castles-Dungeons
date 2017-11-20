@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.target=Character
+comment0.text=\n\ This\ class\ will\ be\ responsible\ for\ containing\ the\ methods\n\ and\ parameters\ that\ apply\ to\ a\ non\ playable\ character\ in\ the\n\ game.\n\ \n\ @author\ Jamie\ Dixon\n\ @version\ v0.05\n
+comment1.params=characterType
+comment1.target=Character(CharacterType)
+comment1.text=\n\ Constructor\ for\ objects\ of\ class\ Character\n
+numComments=2

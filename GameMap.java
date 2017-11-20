@@ -84,7 +84,18 @@ public class GameMap
         createPointOnMap(5,4,"creeping up a dark and smelly tunnel");
         createPointOnMap(5,5,"creeping up a dark and smelly tunnel");
         
-        
+        autoSetExits();
+    }
+    
+    /**
+     * Automatically set room exits - this method will iteraste through the entire
+     * hashmap to check the position of a location on the map, retrieve its neighbouring
+     * room if exists and setting it as an exit in the correct direction.
+     * 
+     * @return boolean - true if the method completes successfully.
+     */
+    private boolean autoSetExits()
+    {
         // Iterate through the coordinates HashMap to check/add exits
         for (Point key : coords.keySet()) {
             
@@ -118,14 +129,25 @@ public class GameMap
                 getLocationByPoint(key).setExit("south", getLocationByPoint(neighbourPoint));
             }
         }
+        
+        return true;
     }
     
+    /**
+     * createPointOnMap is responsible for creating map tiles first
+     * it will check if a item exists in the chosen position and if
+     * it does not exist in the HashMap it will create a new Point object
+     * and a new Location object storing them in the map coordinates HashMap
+     * respectively.
+     * 
+     * @params  int xPos, int yPos, String description
+     * @returns boolean true if the new location was added to map, false otherwise.
+     */
     private boolean createPointOnMap(int xPos, int yPos, String description)
     {
         Point thisPoint = new Point(xPos, yPos);
         
         if(coords.containsKey(thisPoint)){
-            System.out.println("Position: " +xPos+ "," +yPos+ "taken. Cannot create new: " +description); 
             return false;
         }else{
             coords.put(new Point(xPos,yPos), new Location(description));
@@ -133,6 +155,13 @@ public class GameMap
         }
     }
     
+    /**
+     * getLocationByPoint - this method will return a reference to an instance
+     * of the Location object if it exists in the HashMap with the key point.
+     * 
+     * @params Point point - a point object with x,y coords relating the map position
+     * @return Location - a location object if found with key point. Null otherwise.
+     */
     public Location getLocationByPoint(Point point)
     {
         return coords.get(point);
