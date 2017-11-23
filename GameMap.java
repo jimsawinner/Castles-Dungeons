@@ -31,58 +31,82 @@ public class GameMap
         // create new locations for the dungeons and beasts game
         
         // east hall
-        createPointOnMap(1,-2,"in the great hall");        
-        createPointOnMap(1,-1,"in the great hall");
-        createPointOnMap(1,0,"in the great hall");
-        createPointOnMap(1,1,"in the great hall");
-        createPointOnMap(1,2,"in the great hall");
-        createPointOnMap(1,3,"in the great hall");
-        createPointOnMap(1,4,"in the great hall");
-        createPointOnMap(1,5,"in the great hall");
+        createPointOnMap(1,-2,"in the great hall", LocationType.HALL);        
+        createPointOnMap(1,-1,"in the great hall", LocationType.HALL);
+        createPointOnMap(1,0,"in the great hall", LocationType.HALL);
+        createPointOnMap(1,1,"in the great hall", LocationType.HALL);
+        createPointOnMap(1,2,"in the great hall", LocationType.HALL);
+        createPointOnMap(1,3,"in the great hall", LocationType.HALL);
+        createPointOnMap(1,4,"in the great hall", LocationType.HALL);
+        createPointOnMap(1,5,"in the great hall", LocationType.HALL);
         
         // west hall
-        createPointOnMap(-1,5,"in the great hall");
-        createPointOnMap(-1,4,"in the great hall");
-        createPointOnMap(-1,3,"in the great hall");
-        createPointOnMap(-1,2,"in the great hall");
-        createPointOnMap(-1,1,"in the great hall");
-        createPointOnMap(-1,0,"in the great hall");
-        createPointOnMap(-1,-1,"in the great hall");
-        createPointOnMap(-1,-2,"in the great hall");
+        createPointOnMap(-1,5,"in the great hall", LocationType.HALL);
+        createPointOnMap(-1,4,"in the great hall", LocationType.HALL);
+        createPointOnMap(-1,3,"in the great hall", LocationType.HALL);
+        createPointOnMap(-1,2,"in the great hall", LocationType.HALL);
+        createPointOnMap(-1,1,"in the great hall", LocationType.HALL);
+        createPointOnMap(-1,0,"in the great hall", LocationType.HALL);
+        createPointOnMap(-1,-1,"in the great hall", LocationType.HALL);
+        createPointOnMap(-1,-2,"in the great hall", LocationType.HALL);
         
-        createPointOnMap(0,0,"in a store room");
-        createPointOnMap(0,-2,"standing in the grand entrance");
-        createPointOnMap(0,-3,"standing on the entrance bridge");
-        createPointOnMap(0,-4,"standing at bridge gates");
+        createPointOnMap(0,2, "rumaging through bed chambers", LocationType.ROOM);
+        createPointOnMap(2,1, "rumaging through bed chambers", LocationType.ROOM);
+        createPointOnMap(0,5, "rumaging through bed chambers", LocationType.ROOM);
+        createPointOnMap(-2,5, "rumaging through bed chambers", LocationType.ROOM);
+        createPointOnMap(-3,5, "walking into a bathroom", LocationType.ROOM);
+        createPointOnMap(-2,2, "walking into a bathroom", LocationType.ROOM);
+        createPointOnMap(2,3, "standing in the kitchen", LocationType.ROOM);
+        createPointOnMap(3,3, "browsing the pantry", LocationType.ROOM);
+        
+        
+        createPointOnMap(0,0,"in a store room", LocationType.STORE);
+        createPointOnMap(0,-2,"standing in the grand entrance", LocationType.ENTRANCE);
+        createPointOnMap(0,-3,"standing on the entrance bridge", LocationType.BRIDGE);
+        createPointOnMap(0,-4,"standing at bridge gates", LocationType.BRIDGE);
 
-        createPointOnMap(1,-4,"rummaging through forest");
-        createPointOnMap(2,-4,"rummaging through forest");
-        createPointOnMap(-1,-4,"rummaging through forest");
-        createPointOnMap(-2,-4,"rummaging through forest");
+        createPointOnMap(1,-4,"rummaging through forest", LocationType.OUTSIDE);
+        createPointOnMap(2,-4,"rummaging through forest", LocationType.OUTSIDE);
+        createPointOnMap(-1,-4,"rummaging through forest", LocationType.OUTSIDE);
+        createPointOnMap(-2,-4,"rummaging through forest", LocationType.OUTSIDE);
         
         // west tunnel & guard room
-        createPointOnMap(-2,-1,"standing in a guard room");
-        createPointOnMap(-3,-1,"creeping up a dark and smelly tunnel");
-        createPointOnMap(-4,-1,"creeping up a dark and smelly tunnel");
-        createPointOnMap(-5,-1,"creeping up a dark and smelly tunnel");
-        createPointOnMap(-5,0,"creeping up a dark and smelly tunnel");
-        createPointOnMap(-5,1,"creeping up a dark and smelly tunnel");
-        createPointOnMap(-5,2,"creeping up a dark and smelly tunnel");
-        createPointOnMap(-5,3,"creeping up a dark and smelly tunnel");
-        createPointOnMap(-5,4,"creeping up a dark and smelly tunnel");
-        createPointOnMap(-5,5,"creeping up a dark and smelly tunnel");
+        createPointOnMap(-2,-1,"standing in a guard room", LocationType.GUARDED);
+        createPointOnMap(-3,-1,"creeping up a dark and smelly tunnel", LocationType.TUNNEL);
+        createPointOnMap(-4,-1,"creeping up a dark and smelly tunnel", LocationType.TUNNEL);
+        createPointOnMap(-5,-1,"creeping up a dark and smelly tunnel", LocationType.TUNNEL);
+        createPointOnMap(-5,0,"creeping up a dark and smelly tunnel", LocationType.TUNNEL);
+        createPointOnMap(-5,1,"creeping up a dark and smelly tunnel", LocationType.TUNNEL);
+        createPointOnMap(-5,2,"creeping up a dark and smelly tunnel", LocationType.TUNNEL);
+        createPointOnMap(-5,3,"creeping up a dark and smelly tunnel", LocationType.TUNNEL);
+        createPointOnMap(-5,4,"creeping up a dark and smelly tunnel", LocationType.TUNNEL);
+        createPointOnMap(-5,5,"creeping up a dark and smelly tunnel", LocationType.TUNNEL);
+        createPointOnMap(-5,6,"creeping up a dark and smelly tunnel", LocationType.TUNNEL);
+        createPointOnMap(-4,6,"creeping up a dark and smelly tunnel", LocationType.TUNNEL);
+        createPointOnMap(-6,6,"creeping up a dark and smelly tunnel", LocationType.TUNNEL);
+        createPointOnMap(-4,7,"in a dungeon - there is no way out", LocationType.DUNGEON);
+        createPointOnMap(-6,7,"in a dungeon - there is no way out", LocationType.DUNGEON);
         
         // east tunnel & guard room
-        createPointOnMap(2,-1,"standing in a guard room");
-        createPointOnMap(3,-1,"creeping up a dark and smelly tunnel");
-        createPointOnMap(4,-1,"creeping up a dark and smelly tunnel");
-        createPointOnMap(5,-1,"creeping up a dark and smelly tunnel");
-        createPointOnMap(5,0,"creeping up a dark and smelly tunnel");
-        createPointOnMap(5,1,"creeping up a dark and smelly tunnel");
-        createPointOnMap(5,2,"creeping up a dark and smelly tunnel");
-        createPointOnMap(5,3,"creeping up a dark and smelly tunnel");
-        createPointOnMap(5,4,"creeping up a dark and smelly tunnel");
-        createPointOnMap(5,5,"creeping up a dark and smelly tunnel");
+        createPointOnMap(2,-1,"standing in a guard room", LocationType.GUARDED);
+        createPointOnMap(3,-1,"creeping up a dark and smelly tunnel", LocationType.TUNNEL);
+        createPointOnMap(4,-1,"creeping up a dark and smelly tunnel", LocationType.TUNNEL);
+        createPointOnMap(5,-1,"creeping up a dark and smelly tunnel", LocationType.TUNNEL);
+        createPointOnMap(5,0,"creeping up a dark and smelly tunnel", LocationType.TUNNEL);
+        createPointOnMap(5,1,"creeping up a dark and smelly tunnel", LocationType.TUNNEL);
+        createPointOnMap(5,2,"creeping up a dark and smelly tunnel", LocationType.TUNNEL);
+        createPointOnMap(5,3,"creeping up a dark and smelly tunnel", LocationType.TUNNEL);
+        createPointOnMap(5,4,"creeping up a dark and smelly tunnel", LocationType.TUNNEL);
+        createPointOnMap(5,5,"creeping up a dark and smelly tunnel", LocationType.TUNNEL);
+        createPointOnMap(5,6,"creeping up a dark and smelly tunnel", LocationType.TUNNEL);
+        createPointOnMap(6,6,"creeping up a dark and smelly tunnel", LocationType.TUNNEL);
+        createPointOnMap(4,6,"creeping up a dark and smelly tunnel", LocationType.TUNNEL);
+        createPointOnMap(4,7,"in a dungeon - there is no way out", LocationType.DUNGEON);
+        createPointOnMap(6,7,"in a dungeon - there is no way out", LocationType.DUNGEON);
+        
+        createPointOnMap(4,-2, "stuck in a trap", LocationType.TRAP);
+        createPointOnMap(-2,6, "stuck in a trap", LocationType.TRAP);
+        createPointOnMap(-6,-1, "stuck in a trap", LocationType.TRAP);
         
         autoSetExits();
     }
@@ -143,14 +167,14 @@ public class GameMap
      * @params  int xPos, int yPos, String description
      * @returns boolean true if the new location was added to map, false otherwise.
      */
-    private boolean createPointOnMap(int xPos, int yPos, String description)
+    private boolean createPointOnMap(int xPos, int yPos, String description, LocationType type)
     {
         Point thisPoint = new Point(xPos, yPos);
         
         if(coords.containsKey(thisPoint)){
             return false;
         }else{
-            coords.put(new Point(xPos,yPos), new Location(description));
+            coords.put(new Point(xPos,yPos), new Location(description, type, thisPoint));
             return true;
         }
     }

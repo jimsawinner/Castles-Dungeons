@@ -1,6 +1,7 @@
 import java.util.HashMap;
 import java.util.Set;
 import java.awt.Point;
+import java.util.Iterator;
 
 /**
  * Player class - will be responsible for handling
@@ -26,7 +27,7 @@ public class Player
     {
         hp = 100; // players health points
         inventory = new HashMap<String, Item>(); // new empty hashmap for inventory
-        maxStorage = 1;
+        maxStorage = 10;
     }
     
     /**
@@ -41,7 +42,7 @@ public class Player
         // Try to leave current room.
         Location nextLocation = getCurrentPosition().getExit(direction);
         
-        switch(direction){
+        /*switch(direction){
             case "north" :
                 System.out.println("go north");
                 break;
@@ -54,13 +55,37 @@ public class Player
             case "south" :
                 System.out.println("go south");
                 break;
-        }
+        }*/
 
         if (nextLocation == null) {
             return false;
-        }
-        else {
+        }else if (currentPosition.getLocationType() == LocationType.TRAP){
+            return false;
+        } else {
             setCurrentPosition(nextLocation);
+            HashMap<String, Character> npcs = nextLocation.getNPCs();
+            
+            if (npcs.size() > 0) {
+                System.out.println("Characters Here: ");
+            }
+            
+            //Iterate over the npcs HashMap and printout the contents
+            Iterator entries = npcs.entrySet().iterator();
+            while (entries.hasNext()) {
+                HashMap.Entry entry = (HashMap.Entry) entries.next();
+                String key = (String)entry.getKey();
+                Character value = (Character)entry.getValue();
+                System.out.println(key + "Health: " + value.getHealthPoints());
+                
+                switch(key) {
+                    case "Dragon":
+                        System.out.println("The Dragon breathes fire in your direction");
+                        break;
+                    case "Witch":
+                        System.out.println("The witch is attempting to cast a spell on you");
+                        break;
+                }
+            }
         }
         
         return true;

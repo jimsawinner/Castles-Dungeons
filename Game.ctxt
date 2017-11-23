@@ -6,6 +6,7 @@ comment1.target=Game()
 comment1.text=\n\ Create\ the\ game\ and\ initialise\ its\ internal\ map.\n
 comment10.params=command
 comment10.target=void\ testProcessCommand(Command)
+comment10.text=\n\ Development\ test\ methods\ -\ prevents\ making\ other\ methods\ public\n\ delete\ these\ methods\ from\ production\ game.\n
 comment2.params=
 comment2.target=void\ play()
 comment2.text=\n\ \ Main\ play\ routine.\ \ Loops\ until\ end\ of\ play.\n

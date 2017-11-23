@@ -62,8 +62,9 @@ public class Game
     private void printWelcome()
     {
         System.out.println();
-        System.out.println("Welcome to the World of Zuul!");
-        System.out.println("World of Zuul is a new, incredibly boring adventure game.");
+        System.out.println("Welcome to my version of Zuul!");
+        System.out.println("You are in the ground's of a castle. You must collect");
+        System.out.println("all of the items on the map without becoming trapped!");
         System.out.println("Type '" + CommandWord.HELP + "' if you need help.");
         System.out.println();
         System.out.println(player1.getCurrentPosition().getLongDescription());
@@ -129,7 +130,7 @@ public class Game
     private void printHelp() 
     {
         System.out.println("You are lost. You are alone. You wander");
-        System.out.println("around at the university.");
+        System.out.println("around at the castle.");
         System.out.println();
         System.out.println("Your command words are:");
         parser.showCommands();
@@ -210,6 +211,10 @@ public class Game
         }
     }
     
+    /**
+     * Development test methods - prevents making other methods public
+     * delete these methods from production game.
+     */
     public void testProcessCommand(Command command)
     {
         processCommand(command);

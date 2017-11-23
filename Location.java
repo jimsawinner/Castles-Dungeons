@@ -2,6 +2,7 @@ import java.util.Set;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Random;
+import java.awt.Point;
 
 /**
  * Class Room - a room in an adventure game.
@@ -19,6 +20,8 @@ import java.util.Random;
 
 public class Location 
 {
+    private Point point;
+    private LocationType type;
     private String description;
     private HashMap<String, Location> exits;        // stores exits of this room.
     private HashMap<String, Item> items;
@@ -30,26 +33,35 @@ public class Location
      * "an open court yard".
      * @param description The room's description.
      */
-    public Location(String description) 
+    public Location(String description, LocationType type, Point point) 
     {
+        this.type = type;
         this.description = description;
+        this.point = point;
         exits = new HashMap<String, Location>();
         items = new HashMap<String, Item>();
         npcs = new HashMap<String, Character>();
         
         Random rand = new Random();
         
-        // Give a 50% chance of this location gaining an item
-        float chance = rand.nextFloat();
-        if (chance <= 0.25f) {
-            addItem("ether", new Item("Health  boost.", 0, 10));
-        } else if (chance <= 0.50f){
-            addItem("gold coin", new Item("A gold coin.", 0, 50));
-        }
-        
-        chance = rand.nextFloat();
-        if(chance <= 0.10f) {
-            addNPC("Dragon", new Character(CharacterType.DRAGON));
+        // Dont add characters or items in certain locations
+        if(type != LocationType.OUTSIDE && type != LocationType.TRAP){
+            // Give a 50% chance of this location gaining an item
+            float chance = rand.nextFloat();
+            if (chance <= 0.25f) {
+                addItem("ether", new Item("Health  boost.", 0, 10));
+            } else if (chance <= 0.50f){
+                addItem("gold coin", new Item("A gold coin.", 0, 50));
+            }
+            
+            chance = rand.nextFloat();
+            if(chance <= 1f) {
+                addNPC("Dragon", new Character(CharacterType.DRAGON));
+            }
+            
+            if(chance <= 1f) {
+                addNPC("Witch", new Character(CharacterType.DRAGON));
+            }
         }
     }
 
@@ -80,7 +92,7 @@ public class Location
      */
     public String getLongDescription()
     {
-        String locationMessage = "You are " + description + ".\n" + getExitString();
+        String locationMessage = "You are " + description + ".\n At Position: " + point.getX() + "," + point.getY() + "\n" + getExitString();
         return locationMessage;
         
     }
@@ -96,6 +108,25 @@ public class Location
         Set<String> keys = exits.keySet();
         for(String exit : keys) {
             returnString += " " + exit;
+        }
+        return returnString;
+    }
+    
+    /**
+     * Return a string describing the location's exits, for example
+     * "Exits: north west".
+     * @return Details of the location's exits.
+     */
+    public String getCharactersString()
+    {
+        if(!hasItems()){
+            return "No Items Here";
+        }
+        
+        String returnString = "Items:";
+        Set<String> keys = items.keySet();
+        for(String item : keys) {
+            returnString += " " + item;
         }
         return returnString;
     }
@@ -177,20 +208,43 @@ public class Location
     }
     
     /**
+     * Returns an items name by its key.
      * 
+     * @params String key
+     * @return String - the items name
      */
-    public String getItemName(String name)
+    public String getItemName(String key)
     {
-        return items.get(name).getName();
+        return items.get(key).getName();
     }
     
     /**
      * Add a non playable character to the location
      * 
+     * @params String name, Character object
      */
     private void addNPC(String name, Character character)
     {
         npcs.put(name, character);
+    }
+    
+    /**
+     * Returns the HashMap of NPC's at this location
+     * 
+     * @return HashMap<String, Character>
+     */
+    public HashMap<String, Character> getNPCs(){
+        return this.npcs;
+    }
+    
+    /**
+     * Get the location type
+     * 
+     */
+    
+    public LocationType getLocationType()
+    {
+        return this.type;
     }
 }
 

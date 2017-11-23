@@ -10,7 +10,9 @@
 public class Character
 {
     // instance variables
-    private int hp;
+    private int hp; // health points
+    private int dp; // damage points
+    
     private CharacterType charType;
 
     /**
@@ -23,13 +25,20 @@ public class Character
         switch(characterType){
             case DRAGON:
                 this.hp = 250;
+                this.dp = 10;
                 break;
             case MONSTER:
                 this.hp = 150;
+                this.dp = 7;
                 break;
             case WITCH:
                 this.hp = 50;
+                this.dp = 5;
                 break;
         }
+    }
+    
+    public int getHealthPoints() {
+        return this.hp;
     }
 }
