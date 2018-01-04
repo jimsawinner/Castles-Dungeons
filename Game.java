@@ -75,7 +75,7 @@ public class Game
      * @param command The command to be processed.
      * @return true If the command ends the game, false otherwise.
      */
-    private boolean processCommand(Command command) 
+    public boolean processCommand(Command command) 
     {
         boolean wantToQuit = false;
 

@@ -1,0 +1,12 @@
+#BlueJ class context
+comment0.target=GameGUI
+comment0.text=\n\ Write\ a\ description\ of\ class\ GameGUI\ here.\n\ \n\ @author\ (your\ name)\ \n\ @version\ (a\ version\ number\ or\ a\ date)\n
+comment1.params=
+comment1.target=GameGUI()
+comment2.params=
+comment2.target=void\ setup()
+comment3.params=e
+comment3.target=void\ actionPerformed(java.awt.event.ActionEvent)
+comment4.params=
+comment4.target=void\ addGameControls()
+numComments=5
