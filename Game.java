@@ -48,12 +48,12 @@ public class Game
         // Enter the main command loop.  Here we repeatedly read commands and
         // execute them until the game is over.
                 
-        boolean finished = false;
-        while (! finished) {
-            Command command = parser.getCommand();
-            finished = processCommand(command);
-        }
-        System.out.println("Thank you for playing.  Good bye.");
+        //boolean finished = false;
+        //while (! finished) {
+        //    Command command = parser.getCommand();
+        //    finished = processCommand(command);
+        //}
+        //System.out.println("Thank you for playing.  Good bye.");
     }
 
     /**
@@ -75,7 +75,7 @@ public class Game
      * @param command The command to be processed.
      * @return true If the command ends the game, false otherwise.
      */
-    private boolean processCommand(Command command) 
+    public boolean processCommand(Command command) 
     {
         boolean wantToQuit = false;
 
