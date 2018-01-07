@@ -7,10 +7,9 @@
  * @author Jamie Dixon
  * @version v0.05
  */
-public class Character
+public class Character extends Char
 {
     // instance variables
-    private int hp; // health points
     private int dp; // damage points
     
     private CharacterType charType;

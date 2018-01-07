@@ -55,7 +55,7 @@ public class GameGUI extends JFrame
         this.setSize(800, 600);   
         
         Container pane = this.getContentPane();
-        JPanel p = new JPanel(new GridBagLayout());
+        //JPanel p = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         
         JButton button;

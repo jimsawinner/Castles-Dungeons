@@ -55,12 +55,12 @@ public class Location
             }
             
             chance = rand.nextFloat();
-            if(chance <= 1f) {
+            if(chance <= 0.20f) {
                 addNPC("Dragon", new Character(CharacterType.DRAGON));
             }
             
-            if(chance <= 1f) {
-                addNPC("Witch", new Character(CharacterType.DRAGON));
+            if(chance <= 0.40f) {
+                addNPC("Witch", new Character(CharacterType.WITCH));
             }
         }
     }

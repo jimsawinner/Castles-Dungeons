@@ -10,11 +10,10 @@ import java.util.Iterator;
  * @author Jamie Dixon
  * @version v0.01
  */
-public class Player
+public class Player extends Char
 {
     private Location currentPosition;   // the players current position
     private HashMap<String, Item> inventory;    // collection of items
-    private int hp; // the players health points
     private int maxStorage;
 
     /**
@@ -25,7 +24,7 @@ public class Player
      */
     public Player()
     {
-        hp = 100; // players health points
+        this.hp = 100; // players health points
         inventory = new HashMap<String, Item>(); // new empty hashmap for inventory
         maxStorage = 10;
     }
