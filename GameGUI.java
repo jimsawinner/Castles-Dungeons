@@ -42,7 +42,7 @@ public class GameGUI extends JFrame
         
         g1.play();
         
-        g1.log();
+        g1.log("Game Ready");
     }
     
     public void keyPressed(KeyEvent e) {

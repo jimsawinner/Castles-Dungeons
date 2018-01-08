@@ -28,12 +28,36 @@ public class Game
     private Player player1;
     //private HashMap<String, Location> map;
     private GameMap map;
+    
+    Logger logger = Logger.getLogger("GameLog");  
+    FileHandler fh;  
         
     /**
      * Create the game and initialise its internal map.
      */
     public Game() 
     {
+        // setup the logger
+        try {  
+    
+            // This block configure the logger with handler and formatter  
+            Date date = new Date();
+            fh = new FileHandler("logs/logfile-"+ date.getTime() +".log");  
+            logger.addHandler(fh);
+            SimpleFormatter formatter = new SimpleFormatter();  
+            fh.setFormatter(formatter);  
+    
+            // the following statement is used to log any messages  
+            logger.info("My first log");  
+    
+        } catch (SecurityException e) {  
+            e.printStackTrace();  
+        } catch (IOException e) {  
+            e.printStackTrace();  
+        }  
+    
+        logger.info("Hi How r u?");
+        
         player1 = new Player();
         parser = new Parser();
         map = new GameMap();
@@ -88,7 +112,7 @@ public class Game
             System.out.println("I don't know what you mean...");
             return false;
         }
-
+        
         if (commandWord == CommandWord.HELP) {
             printHelp();
         }
@@ -98,7 +122,7 @@ public class Game
         else if (commandWord == CommandWord.QUIT) {
             wantToQuit = quit(command);
         }
-     else if (commandWord == CommandWord.PICK) {
+        else if (commandWord == CommandWord.PICK) {
             takeItem(command);
         }
         else if (commandWord == CommandWord.DROP) {
@@ -155,6 +179,7 @@ public class Game
         
         if(player1.move(direction)){
             System.out.println("Moved");
+            log("Player Moved "+direction);
             System.out.println(player1.getCurrentPosition().getLongDescription());
         }else{
             System.out.println("There is no door!");
@@ -174,6 +199,7 @@ public class Game
         try{
             player1.takeItem(itemName);
             System.out.println("Picked up "+itemName);
+            log("Player obtained item: "+itemName);
         }
         catch (Exception e){
             System.out.println("Error Picking up item");
@@ -193,6 +219,7 @@ public class Game
         
         if(player1.dropItem(itemName)){
             System.out.println("Dropped "+itemName);
+            log("Player dropped item: "+itemName);
         }else{
             System.out.println("No " +itemName+ " in inventory.");
         }
@@ -217,30 +244,9 @@ public class Game
     /**
      * Logging Method
      */
-    public void log()
+    public void log(String logMessage)
     {
-        Logger logger = Logger.getLogger("MyLog");  
-        FileHandler fh;  
-    
-        try {  
-    
-            // This block configure the logger with handler and formatter
-            Date date = new Date();
-            fh = new FileHandler("logs/logfile-"+ date.getTime() +".log");  
-            logger.addHandler(fh);
-            SimpleFormatter formatter = new SimpleFormatter();  
-            fh.setFormatter(formatter);  
-    
-            // the following statement is used to log any messages  
-            logger.info("My first log");  
-    
-        } catch (SecurityException e) {  
-            e.printStackTrace();  
-        } catch (IOException e) {  
-            e.printStackTrace();  
-        }  
-    
-        logger.info("Hi How r u?");         
+        logger.info(logMessage);
     }
     
     /**
