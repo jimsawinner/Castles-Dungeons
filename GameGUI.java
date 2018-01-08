@@ -239,7 +239,7 @@ public class GameGUI extends JFrame
         //pane.add(button, c);
         
         // controls panel
-        Image dimg = loadImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+        Image dimg = loadImage("images/forest.png").getScaledInstance(200, 150, Image.SCALE_SMOOTH);
         
         JLabel imageLabel = new JLabel(new ImageIcon(dimg));
         //JLabel imageLabel = new JLabel("Image");
@@ -349,10 +349,10 @@ public class GameGUI extends JFrame
      * 
      * 
      */
-    private BufferedImage loadImage()
+    private BufferedImage loadImage(String filename)
     {
         try {
-            InputStream imageStream = this.getClass().getResourceAsStream("resources/n.png");
+            InputStream imageStream = this.getClass().getResourceAsStream("resources/"+filename);
             BufferedImage image = ImageIO.read(imageStream);
             return image;
         }catch(Exception ex) {
