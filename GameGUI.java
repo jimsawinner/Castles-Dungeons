@@ -41,17 +41,48 @@ public class GameGUI extends JFrame
         setup();
         
         g1.play();
+        
+        g1.log();
     }
     
-    private void processGameAction()
+    public void keyPressed(KeyEvent e) {
+    
+        int key = e.getKeyCode();
+    
+        if (key == KeyEvent.VK_LEFT) {
+            processGameAction("go west");
+        }
+    
+        if (key == KeyEvent.VK_RIGHT) {
+            processGameAction("go east");
+        }
+    
+        if (key == KeyEvent.VK_UP) {
+            processGameAction("go north");
+        }
+    
+        if (key == KeyEvent.VK_DOWN) {
+            processGameAction("go down");
+        }
+    }
+    
+    private void processGameAction(String commandText)
     {
-        
+        // Fetch the command from field1 ...
+        Command command = parser.getCommandFromText(commandText);
+        finished = g1.processCommand(command);
+        if (finished == true)
+        // Game is over
+        {
+            System.out.println("Thank you for playing.  Good bye.");
+            System.exit(0);
+        }
     }
     
     private void setup()
     {
         this.setTitle("Castles & Dungeons Zuul Project");
-        this.getContentPane().setLayout(new GridLayout(1,2));
+        this.getContentPane().setLayout(new GridLayout(10,10));
         this.setSize(800, 600);   
         
         Container pane = this.getContentPane();
@@ -81,17 +112,7 @@ public class GameGUI extends JFrame
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) 
             {
-                // Fetch the command from field1 ...
-                String commandText = "go north";
-                Command command = parser.getCommandFromText(commandText);
-                finished = g1.processCommand(command);
-                if (finished == true)
-                // Game is over
-                {
-                    System.out.println("Thank you for playing.  Good bye.");
-                    System.exit(0);
-                }
-
+                processGameAction("go north");
             }
         });
         pane.add(button, c);
@@ -111,17 +132,7 @@ public class GameGUI extends JFrame
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) 
             {
-                // Fetch the command from field1 ...
-                String commandText = "go west";
-                Command command = parser.getCommandFromText(commandText);
-                finished = g1.processCommand(command);
-                if (finished == true)
-                // Game is over
-                {
-                    System.out.println("Thank you for playing.  Good bye.");
-                    System.exit(0);
-                }
-
+                processGameAction("go west");
             }
         });
         pane.add(button, c);
@@ -137,17 +148,7 @@ public class GameGUI extends JFrame
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) 
             {
-                // Fetch the command from field1 ...
-                String commandText = "go east";
-                Command command = parser.getCommandFromText(commandText);
-                finished = g1.processCommand(command);
-                if (finished == true)
-                // Game is over
-                {
-                    System.out.println("Thank you for playing.  Good bye.");
-                    System.exit(0);
-                }
-
+                processGameAction("go east");
             }
         });
         pane.add(button, c);
@@ -166,17 +167,7 @@ public class GameGUI extends JFrame
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) 
             {
-                // Fetch the command from field1 ...
-                String commandText = "go south";
-                Command command = parser.getCommandFromText(commandText);
-                finished = g1.processCommand(command);
-                if (finished == true)
-                // Game is over
-                {
-                    System.out.println("Thank you for playing.  Good bye.");
-                    System.exit(0);
-                }
-
+                processGameAction("go south");
             }
         });
         pane.add(button, c);
