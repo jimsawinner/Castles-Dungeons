@@ -71,13 +71,65 @@ public class GameGUI extends JFrame
     {
         // Fetch the command from field1 ...
         Command command = parser.getCommandFromText(commandText);
-        finished = g1.processCommand(command);
+        finished = processCommand(command);
         if (finished == true)
         // Game is over
         {
             System.out.println("Thank you for playing.  Good bye.");
             System.exit(0);
         }
+    }
+    
+    /**
+     * Moved from Game Class since v0.26
+     * Given a command, process (that is: execute) the command.
+     * @param command The command to be processed.
+     * @return true If the command ends the game, false otherwise.
+     */
+    public boolean processCommand(Command command) 
+    {
+        boolean wantToQuit = false;
+
+        CommandWord commandWord = command.getCommandWord();
+
+        if(commandWord == CommandWord.UNKNOWN) {
+            System.out.println("I don't know what you mean...");
+            return false;
+        }
+        
+        if (commandWord == CommandWord.HELP) {
+            //g1.printHelp();
+        }
+        else if (commandWord == CommandWord.GO) {
+            g1.goToLocation(command);
+        }
+        else if (commandWord == CommandWord.QUIT) {
+            //System.exit(0);
+            wantToQuit = true;
+        }
+        else if (commandWord == CommandWord.PICK) {
+            g1.takeItem(command);
+        }
+        else if (commandWord == CommandWord.DROP) {
+            g1.dropItem(command);
+        }
+        else if (commandWord == CommandWord.LOOK) {
+            if(!command.hasSecondWord()){
+                try{
+                    System.out.println(g1.player1.getCurrentPosition().getItemString());
+                }catch(Exception e){
+                    System.out.println("Error! Could not getItem().getName()");
+                }
+            }else{
+                try{
+                    System.out.println(g1.player1.getInventoryString());
+                }catch(Exception e){
+                    System.out.println("Error! Could not getItem().getName()");
+                }
+            }
+        }
+        // else command not recognised.
+        return wantToQuit;
     }
     
     private void setup()
@@ -245,17 +297,8 @@ public class GameGUI extends JFrame
         menuItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) 
             {
-                // Fetch the command from field1 ...
-                String commandText = "quit";
-                Command command = parser.getCommandFromText(commandText);
-                finished = g1.processCommand(command);
-                if (finished == true)
-                // Game is over
-                {
-                    System.out.println("Thank you for playing.  Good bye.");
-                    System.exit(0);
-                }
-
+                //call the processGameAction hardcoding quit as command
+                processGameAction("quit");
             }
         });
         

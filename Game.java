@@ -25,7 +25,7 @@ public class Game
 {
     private Parser parser;
     //private Room currentRoom;
-    private Player player1;
+    public Player player1;
     //private HashMap<String, Location> map;
     private GameMap map;
     
@@ -96,78 +96,12 @@ public class Game
         System.out.println();
         System.out.println(player1.getCurrentPosition().getLongDescription());
     }
-
-    /**
-     * Given a command, process (that is: execute) the command.
-     * @param command The command to be processed.
-     * @return true If the command ends the game, false otherwise.
-     */
-    public boolean processCommand(Command command) 
-    {
-        boolean wantToQuit = false;
-
-        CommandWord commandWord = command.getCommandWord();
-
-        if(commandWord == CommandWord.UNKNOWN) {
-            System.out.println("I don't know what you mean...");
-            return false;
-        }
-        
-        if (commandWord == CommandWord.HELP) {
-            printHelp();
-        }
-        else if (commandWord == CommandWord.GO) {
-            goToLocation(command);
-        }
-        else if (commandWord == CommandWord.QUIT) {
-            wantToQuit = quit(command);
-        }
-        else if (commandWord == CommandWord.PICK) {
-            takeItem(command);
-        }
-        else if (commandWord == CommandWord.DROP) {
-            dropItem(command);
-        }
-        else if (commandWord == CommandWord.LOOK) {
-            if(!command.hasSecondWord()){
-                try{
-                    System.out.println(player1.getCurrentPosition().getItemString());
-                }catch(Exception e){
-                    System.out.println("Error! Could not getItem().getName()");
-                }
-            }else{
-                try{
-                    System.out.println(player1.getInventoryString());
-                }catch(Exception e){
-                    System.out.println("Error! Could not getItem().getName()");
-                }
-            }
-        }
-        // else command not recognised.
-        return wantToQuit;
-    }
-
-    // implementations of user commands:
-
-    /**
-     * Print out some help information.
-     * Here we print some stupid, cryptic message and a list of the 
-     * command words.
-     */
-    private void printHelp() 
-    {
-        System.out.println("You are lost. You are alone. You wander");
-        System.out.println("around at the castle.");
-        System.out.println();
-        System.out.println("Your command words are:");
-        parser.showCommands();
-    }
-
+    
     /** 
      * Try to go to one direction. If there is an exit, enter the new
      * room, otherwise print an error message.
      */
-    private void goToLocation(Command command) 
+    public void goToLocation(Command command) 
     {
         if(!command.hasSecondWord()) {
             // if there is no second word, we don't know where to go...
@@ -179,14 +113,13 @@ public class Game
         
         if(player1.move(direction)){
             System.out.println("Moved");
-            log("Player Moved "+direction);
             System.out.println(player1.getCurrentPosition().getLongDescription());
         }else{
             System.out.println("There is no door!");
         }
     }
-    
-    private void takeItem(Command command)
+
+    public void takeItem(Command command)
     {
         if(!command.hasSecondWord()) {
             // if there is no second word, we don't know what to take...
@@ -207,7 +140,7 @@ public class Game
         }
     }
     
-    private void dropItem(Command command)
+    public void dropItem(Command command)
     {
         if(!command.hasSecondWord()) {
             // if there is no second word, we don't know what to take...
@@ -249,13 +182,7 @@ public class Game
         logger.info(logMessage);
     }
     
-    /**
-     * Development test methods - prevents making other methods public
-     * delete these methods from production game.
-     */
-    public void testProcessCommand(Command command)
-    {
-        processCommand(command);
-    }
+
+    
     
 }
