@@ -63,6 +63,8 @@ public class Game
         map = new GameMap();
         
         player1.setCurrentPosition(map.getLocationByPoint(new Point(2,-4)));  // start game outside
+        
+        addCharacterToGame(); // add a princess to the game
     }
 
     /**
@@ -182,7 +184,10 @@ public class Game
         logger.info(logMessage);
     }
     
-
+    private void addCharacterToGame()
+    {
+        map.getLocationByPoint(new Point(4,7)).addNPC("Princess", new Character(CharacterType.PRINCESS));  // start game outside
+    }
     
     
 }

@@ -21,6 +21,9 @@ public class GameGUI extends JFrame
     final static boolean shouldFill = true;
     final static boolean shouldWeightX = false;
     
+    // location image (instance variable to be able to change it)
+    JLabel imageLabel = new JLabel();
+    
     Game g1; 
     private Parser parser;
     private boolean finished;
@@ -78,6 +81,8 @@ public class GameGUI extends JFrame
             System.out.println("Thank you for playing.  Good bye.");
             System.exit(0);
         }
+        
+        
     }
     
     /**
@@ -158,6 +163,7 @@ public class GameGUI extends JFrame
             public void actionPerformed(ActionEvent e) 
             {
                 processGameAction("go north");
+                changeImageLabel(imageLabel, "images/bridge-gates.png");
             }
         });
         pane.add(button, c);
@@ -169,6 +175,7 @@ public class GameGUI extends JFrame
             public void actionPerformed(ActionEvent e) 
             {
                 processGameAction("go south");
+                changeImageLabel(imageLabel, "images/forest.png");
             }
         });
         pane.add(button, c);
@@ -206,8 +213,10 @@ public class GameGUI extends JFrame
         // controls panel
         Image dimg = loadImage("images/forest.png").getScaledInstance(800, 200, Image.SCALE_SMOOTH);
         
-        JLabel imageLabel = new JLabel(new ImageIcon(dimg));
-        //JLabel imageLabel = new JLabel("Image");
+        //JLabel imageLabel = new JLabel(new ImageIcon(dimg));
+        
+        imageLabel.setIcon(new ImageIcon(dimg));
+
         //c.ipady = 100;
         //c.ipadx = 100;
         c.weightx = 0.0;
@@ -241,6 +250,15 @@ public class GameGUI extends JFrame
         this.setVisible(true);
         
         showDialog();
+    }
+    
+    private void changeImageLabel(JLabel label, String imageFileName)
+    {
+        Image dimg = loadImage(imageFileName).getScaledInstance(800, 200, Image.SCALE_SMOOTH);
+        
+        //JLabel imageLabel = new JLabel(new ImageIcon(dimg));
+        
+        imageLabel.setIcon(new ImageIcon(dimg));
     }
     
     private void setupMenu()

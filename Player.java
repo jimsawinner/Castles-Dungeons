@@ -83,6 +83,9 @@ public class Player extends Char
                     case "Witch":
                         System.out.println("The witch is attempting to cast a spell on you");
                         break;
+                    case "Princess":
+                        System.out.println("A princess is trapped. Find the keys to free her");
+                        break;
                 }
             }
         }
