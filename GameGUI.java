@@ -19,7 +19,7 @@ public class GameGUI extends JFrame
     private int x;
     
     final static boolean shouldFill = true;
-    final static boolean shouldWeightX = true;
+    final static boolean shouldWeightX = false;
     
     Game g1; 
     private Parser parser;
@@ -151,14 +151,6 @@ public class GameGUI extends JFrame
           c.fill = GridBagConstraints.HORIZONTAL;
         }
     
-        button = new JButton("NW");
-        if (shouldWeightX) {
-          c.weightx = 0.5;
-        }
-        c.gridx = 0;
-        c.gridy = 0;
-        //pane.add(button, c);
-    
         button = new JButton("N");
         c.gridx = 1;
         c.gridy = 0;
@@ -169,16 +161,19 @@ public class GameGUI extends JFrame
             }
         });
         pane.add(button, c);
-    
-        button = new JButton("NE");
-        c.gridx = 2;
-        c.gridy = 0;
-        //pane.add(button, c);
+        
+        button = new JButton("S");
+        c.gridx = 1;
+        c.gridy = 2;
+        button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) 
+            {
+                processGameAction("go south");
+            }
+        });
+        pane.add(button, c);
         
         button = new JButton("W");
-        if (shouldWeightX) {
-          c.weightx = 0.5;
-        }
         c.gridx = 0;
         c.gridy = 1;
         
@@ -189,11 +184,6 @@ public class GameGUI extends JFrame
             }
         });
         pane.add(button, c);
-    
-        button = new JButton("HOME");
-        c.gridx = 1;
-        c.gridy = 1;
-        //pane.add(button, c);
     
         button = new JButton("E");
         c.gridx = 2;
@@ -206,53 +196,28 @@ public class GameGUI extends JFrame
         });
         pane.add(button, c);
         
-        button = new JButton("SW");
-        if (shouldWeightX) {
-          c.weightx = 0.5;
-        }
-        c.gridx = 0;
-        c.gridy = 2;
-        //pane.add(button, c);
-    
-        button = new JButton("S");
-        c.gridx = 1;
-        c.gridy = 2;
-        button.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) 
-            {
-                processGameAction("go south");
-            }
-        });
-        pane.add(button, c);
-    
-        button = new JButton("SE");
-        c.gridx = 2;
-        c.gridy = 2;
-        //pane.add(button, c);
-    
-        button = new JButton("Long-Named Button 4");
-        c.ipady = 40; // make this component tall
-        c.weightx = 0.0;
-        c.gridwidth = 3;
-        c.gridx = 0;
-        c.gridy = 3;
-        //pane.add(button, c);
+        JLabel label = new JLabel("Player Stats");
+        c.gridx = 9;
+        c.gridy = 0;
+        label.setFont(new Font("Sans-Serif", Font.BOLD, 20));
+        
+        pane.add(label, c);
         
         // controls panel
-        Image dimg = loadImage("images/forest.png").getScaledInstance(200, 150, Image.SCALE_SMOOTH);
+        Image dimg = loadImage("images/forest.png").getScaledInstance(800, 200, Image.SCALE_SMOOTH);
         
         JLabel imageLabel = new JLabel(new ImageIcon(dimg));
         //JLabel imageLabel = new JLabel("Image");
-        c.ipady = 100;
-        c.ipadx = 100;
+        //c.ipady = 100;
+        //c.ipadx = 100;
         c.weightx = 0.0;
-        c.gridwidth = 3;
+        c.gridwidth = 10;
         c.gridx = 0;
         c.gridy = 4;
         pane.add(imageLabel, c);
     
         
-        JLabel label = new JLabel("Inventory");
+        label = new JLabel("Inventory");
         c.gridx = 0;
         c.gridy = 5;
         
