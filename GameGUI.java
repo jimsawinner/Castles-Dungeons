@@ -222,6 +222,8 @@ public class GameGUI extends JFrame
         
         this.setLocationRelativeTo(null);
         this.setVisible(true);
+        
+        showDialog();
     }
     
     private void setupMenu()
@@ -329,5 +331,18 @@ public class GameGUI extends JFrame
     {
         // put your code here
         return x + y;
+    }
+    
+    private void showDialog()
+    {
+        String backupDir = "logs";
+        
+        // create a jframe
+        JFrame frame = new JFrame("JOptionPane showMessageDialog example");
+        
+        // show a joptionpane dialog using showMessageDialog
+        JOptionPane.showMessageDialog(frame,
+            "Log Directory doesnt exist - creating one now: '" + backupDir + "'.");
+        //System.exit(0);
     }
 }
