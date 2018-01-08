@@ -8,5 +8,6 @@
 public enum CharacterType {
     DRAGON,
     WITCH,
-    MONSTER
+    MONSTER,
+    PRINCESS
 }

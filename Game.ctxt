@@ -23,4 +23,6 @@ comment7.text=\ \n\ "Quit"\ was\ entered.\ Check\ the\ rest\ of\ the\ command\ t
 comment8.params=logMessage
 comment8.target=void\ log(java.lang.String)
 comment8.text=\n\ Logging\ Method\n
-numComments=9
+comment9.params=
+comment9.target=void\ addCharacterToGame()
+numComments=10

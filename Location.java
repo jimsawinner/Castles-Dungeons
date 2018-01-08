@@ -45,7 +45,7 @@ public class Location
         Random rand = new Random();
         
         // Dont add characters or items in certain locations
-        if(type != LocationType.OUTSIDE && type != LocationType.TRAP){
+        if(type != LocationType.OUTSIDE && type != LocationType.TRAP && type != LocationType.DUNGEON){
             // Give a 50% chance of this location gaining an item
             float chance = rand.nextFloat();
             if (chance <= 0.25f) {
@@ -223,7 +223,7 @@ public class Location
      * 
      * @params String name, Character object
      */
-    private void addNPC(String name, Character character)
+    public void addNPC(String name, Character character)
     {
         npcs.put(name, character);
     }
