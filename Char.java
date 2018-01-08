@@ -10,6 +10,8 @@ public class Char
     // instance variables - replace the example below with your own
     private int x;
     protected int hp; // health points
+    protected int ap; // attack points
+    protected int dp; // defence points
 
     /**
      * Constructor for objects of class Char
@@ -18,6 +20,29 @@ public class Char
     {
         // initialise instance variables
         x = 0;
+    }
+    
+    public boolean attack(Char target)
+    {
+        // this character/player attacking an opponent
+        return true;
+    }
+    
+    public boolean defend(Char attacker)
+    {
+        // this character/player defending and attack
+        this.hp = this.hp - attacker.getAp();
+        return true;
+    }
+    
+    public int getHp()
+    {
+        return this.hp;
+    }
+    
+    public int getAp()
+    {
+        return this.ap;
     }
 
     /**

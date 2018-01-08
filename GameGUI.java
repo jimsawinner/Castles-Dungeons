@@ -3,6 +3,7 @@ import java.awt.image.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.imageio.*;
+import java.io.File;
 
 import java.io.InputStream;
 
@@ -258,6 +259,22 @@ public class GameGUI extends JFrame
         
         menu.add(menuItem);
         
+        // create a tools menu
+        menu = new JMenu("Tools");
+        
+        // add to the menu bar
+        menuBar.add(menu);
+        
+        menuItem = new JMenuItem("Delete Logs", KeyEvent.VK_T);
+        menuItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) 
+            {
+                deleteLogs();
+            }
+        });
+        
+        menu.add(menuItem);
+        
         // create a help menu
         menu = new JMenu("Help");
         
@@ -266,6 +283,21 @@ public class GameGUI extends JFrame
         
         this.setJMenuBar(menuBar);
     }
+    
+    private void deleteLogs()
+    {
+        File file = new File("logs");      
+        String[] myFiles;    
+        
+        if(file.isDirectory()){
+            myFiles = file.list();
+            for (int i=0; i<myFiles.length; i++) {
+                File myFile = new File(file, myFiles[i]); 
+                myFile.delete();
+            }
+        }
+    }
+    
     
     /**
      * A method to load an image from file
