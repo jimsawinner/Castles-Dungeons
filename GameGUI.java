@@ -21,9 +21,6 @@ public class GameGUI extends JFrame
     // instance variables - replace the example below with your own
     private HashMap<String, JButton> buttons;
     
-    final static boolean shouldFill = true;
-    final static boolean shouldWeightX = false;
-    
     // location image (instance variable to be able to change it)
     JLabel imageLabel = new JLabel();
     
@@ -50,6 +47,9 @@ public class GameGUI extends JFrame
         g1.play();
         
         g1.log("Game Ready");
+        
+        checkAndEnableButtons();
+        
     }
     
     public void keyPressed(KeyEvent e) {
@@ -70,6 +70,34 @@ public class GameGUI extends JFrame
     
         if (key == KeyEvent.VK_DOWN) {
             processGameAction("go down");
+        }
+    }
+    
+    private void checkAndEnableButtons()
+    {
+        // disable n,e,s,w buttons and re-enable if exit exists
+        buttons.get("N").setEnabled(false);
+        buttons.get("E").setEnabled(false);
+        buttons.get("S").setEnabled(false);
+        buttons.get("W").setEnabled(false);
+        
+        ArrayList<String> exits = g1.player1.getCurrentPosition().getExitsFirstChar();
+        
+        for (int i = 0; i < exits.size(); i++) {
+            switch(exits.get(i)) {
+                case "n":
+                    buttons.get("N").setEnabled(true);
+                    break;
+                case "e":
+                    buttons.get("E").setEnabled(true);
+                    break;
+                case "s":
+                    buttons.get("S").setEnabled(true);
+                    break;
+                case "w":
+                    buttons.get("W").setEnabled(true);
+                    break;
+            }
         }
     }
     
@@ -99,30 +127,7 @@ public class GameGUI extends JFrame
 
         }
         
-        // disable n,e,s,w buttons and re-enable if exit exists
-        buttons.get("N").setEnabled(false);
-        buttons.get("W").setEnabled(false);
-        buttons.get("S").setEnabled(false);
-        buttons.get("W").setEnabled(false);
-        
-        ArrayList<String> exits = g1.player1.getCurrentPosition().getExitsFirstChar();
-        
-        for (int i = 0; i < exits.size(); i++) {
-            switch(exits.get(i)) {
-                case "n":
-                    buttons.get("N").setEnabled(true);
-                    break;
-                case "e":
-                    buttons.get("E").setEnabled(true);
-                    break;
-                case "s":
-                    buttons.get("S").setEnabled(true);
-                    break;
-                case "w":
-                    buttons.get("W").setEnabled(true);
-                    break;
-            }
-        }
+        checkAndEnableButtons();
     }
     
     /**
@@ -191,10 +196,10 @@ public class GameGUI extends JFrame
         pane.setLayout(new GridBagLayout());
         //GridBagConstraints c = new GridBagConstraints();
         
-        if (shouldFill) {
-          // natural height, maximum width
-          c.fill = GridBagConstraints.HORIZONTAL;
-        }
+
+        // natural height, maximum width
+        c.fill = GridBagConstraints.HORIZONTAL;
+        
     
         button = new JButton("N");
         c.gridx = 1;
