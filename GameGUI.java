@@ -5,6 +5,10 @@ import javax.swing.*;
 import javax.imageio.*;
 import java.io.File;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
 import java.util.HashMap;
 import java.util.ArrayList;
 
@@ -20,6 +24,7 @@ public class GameGUI extends JFrame
 {
     // instance variables - replace the example below with your own
     private HashMap<String, JButton> buttons;
+    private HashMap<String, JComponent> components; //is this recommended?
     
     // location image (instance variable to be able to change it)
     JLabel imageLabel = new JLabel();
@@ -35,6 +40,7 @@ public class GameGUI extends JFrame
     {
         // initialise instance variables
         buttons = new HashMap<String, JButton>();
+        components = new HashMap<String, JComponent>();
         
         this.setResizable(false);
         
@@ -49,7 +55,20 @@ public class GameGUI extends JFrame
         g1.log("Game Ready", "info");
         
         checkAndEnableButtons();
+        checkAndPopulateInventoryList();
         
+    }
+    
+    private void checkAndPopulateInventoryList()
+    {
+        JList inventoryList = (JList) components.get("inventory");
+        String[] nullInventory = {};
+        ArrayList<String> inventory = g1.player1.getInventoryItems();
+        if(inventory != null){
+            inventoryList.setListData(inventory.toArray());
+        }else{
+            inventoryList.setListData(nullInventory);
+        }
     }
     
     public void keyPressed(KeyEvent e) {
@@ -287,16 +306,50 @@ public class GameGUI extends JFrame
         c.gridwidth = 1; // 2 columns wide
         c.gridy = 6; // third row
         
-        String[] selections = { "green", "red", "orange", "dark blue" };
-        JList list = new JList(selections);
+        String[] inventory = { "coin", "ether", "key" };
+        JList list = new JList(inventory);
         
         pane.add(list, c);
+        components.put("inventory", list);
+        
+        c.gridx = 0; // aligned with button 2
+        c.gridwidth = 1; // 2 columns wide
+        c.gridy = 6; // third row
+        
+        pane.add(list, c);
+        components.put("locationItems", list);
+        
         setupMenu();
+        
+        // setup mouse event listeners
+        // http://www.java2s.com/Tutorial/Java/0240__Swing/Selectioneventfordoubleclickinganiteminthelist.htm
+        MouseListener mouseListener = new MouseAdapter() {
+            public void mouseClicked(MouseEvent mouseEvent) {
+                JList theList = (JList) mouseEvent.getSource();
+                if (mouseEvent.getClickCount() == 2) {
+                    int index = theList.locationToIndex(mouseEvent.getPoint());
+                    if (index >= 0) {
+                        Object o = theList.getModel().getElementAt(index);
+                        System.out.println("Double-clicked on: " + o.toString());
+                        g1.player1.dropItem("coin");
+                        checkAndPopulateInventoryList();
+                    }
+                }
+            }
+        };
+        
+        components.get("inventory").addMouseListener(mouseListener);
+    
         
         this.setLocationRelativeTo(null);
         this.setVisible(true);
         
         showDialog();
+        try{
+            g1.player1.takeItem("coin");
+        }catch(Exception ex){
+            System.out.println("Error taking coin");
+        }
     }
     
     private void changeImageLabel(JLabel label, String imageFileName)

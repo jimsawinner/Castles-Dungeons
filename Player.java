@@ -1,4 +1,5 @@
 import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.Set;
 import java.awt.Point;
 import java.util.Iterator;
@@ -62,6 +63,7 @@ public class Player extends Char
             return false;
         } else {
             setCurrentPosition(nextLocation);
+            System.out.println(nextLocation.getItemString());
             HashMap<String, Character> npcs = nextLocation.getNPCs();
             
             if (npcs.size() > 0) {
@@ -133,6 +135,25 @@ public class Player extends Char
             returnString += " " + item;
         }
         return returnString;
+    }
+    
+    /**
+     * Return a string describing the players inventory, for example
+     * "Inventory: health".
+     * 
+     * @return Details of the players inventory
+     */
+    public ArrayList<String> getInventoryItems()
+    {
+        if(!hasItems()){
+            return null;
+        }
+        ArrayList<String> items = new ArrayList<String>();
+        Set<String> keys = inventory.keySet();
+        for(String item : keys) {
+            items.add(item);
+        }
+        return items;
     }
     
     /**

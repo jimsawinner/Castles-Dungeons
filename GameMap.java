@@ -70,6 +70,9 @@ public class GameMap
         createPointOnMap(-1,-4,"rummaging through forest", LocationType.OUTSIDE);
         createPointOnMap(-2,-4,"rummaging through forest", LocationType.OUTSIDE);
         
+        // debug inventory!!!
+        getLocationByPoint(new Point(2, -4)).addItem("coin", new Item("item", 0, 30));;
+        
         // west tunnel & guard room
         createPointOnMap(-2,-1,"standing in a guard room", LocationType.GUARDED);
         createPointOnMap(-3,-1,"creeping up a dark and smelly tunnel", LocationType.TUNNEL);

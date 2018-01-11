@@ -174,11 +174,6 @@ public class Location
                     break;
             }
         }
-        
-        
-        for(String exit : keys) {
-            returnString += " " + exit;
-        }
         return exitChars;
     }
 
