@@ -46,7 +46,7 @@ public class GameGUI extends JFrame
         
         g1.play();
         
-        g1.log("Game Ready");
+        g1.log("Game Ready", "info");
         
         checkAndEnableButtons();
         

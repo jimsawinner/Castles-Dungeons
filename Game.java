@@ -55,8 +55,6 @@ public class Game
         } catch (IOException e) {  
             e.printStackTrace();  
         }  
-    
-        logger.info("Hi How r u?");
         
         player1 = new Player();
         parser = new Parser();
@@ -73,16 +71,6 @@ public class Game
     public void play() 
     {            
         printWelcome();
-
-        // Enter the main command loop.  Here we repeatedly read commands and
-        // execute them until the game is over.
-                
-        //boolean finished = false;
-        //while (! finished) {
-        //    Command command = parser.getCommand();
-        //    finished = processCommand(command);
-        //}
-        //System.out.println("Thank you for playing.  Good bye.");
     }
 
     /**
@@ -94,7 +82,6 @@ public class Game
         System.out.println("Welcome to my version of Zuul!");
         System.out.println("You are in the ground's of a castle. You must collect");
         System.out.println("all of the items on the map without becoming trapped!");
-        System.out.println("Type '" + CommandWord.HELP + "' if you need help.");
         System.out.println();
         System.out.println(player1.getCurrentPosition().getLongDescription());
     }
@@ -134,7 +121,7 @@ public class Game
         try{
             player1.takeItem(itemName);
             System.out.println("Picked up "+itemName);
-            log("Player obtained item: "+itemName);
+            log("Player obtained item: "+itemName, "info");
         }
         catch (Exception e){
             System.out.println("Error Picking up item");
@@ -154,40 +141,34 @@ public class Game
         
         if(player1.dropItem(itemName)){
             System.out.println("Dropped "+itemName);
-            log("Player dropped item: "+itemName);
+            log("Player dropped item: "+itemName, "info");
         }else{
             System.out.println("No " +itemName+ " in inventory.");
-        }
-    }
-
-    /** 
-     * "Quit" was entered. Check the rest of the command to see
-     * whether we really quit the game.
-     * @return true, if this command quits the game, false otherwise.
-     */
-    private boolean quit(Command command) 
-    {
-        if(command.hasSecondWord()) {
-            System.out.println("Quit what?");
-            return false;
-        }
-        else {
-            return true;  // signal that we want to quit
         }
     }
     
     /**
      * Logging Method
+     * 
+     * @params String logMessage - the message to be stored into the log, String logType the type of log
      */
-    public void log(String logMessage)
+    public void log(String logMessage, String logType)
     {
-        logger.info(logMessage);
+        switch(logType) {
+            case "info":
+                logger.info(logMessage);
+                break;
+            case "error":
+                logger.warning(logMessage);
+                break;
+            default:
+                logger.info(logMessage);
+                break;
+            }
     }
     
     private void addCharacterToGame()
     {
         map.getLocationByPoint(new Point(4,7)).addNPC("Princess", new Character(CharacterType.PRINCESS));  // start game outside
     }
-    
-    
 }
