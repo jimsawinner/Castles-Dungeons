@@ -1,5 +1,6 @@
 import java.util.Set;
 import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 import java.awt.Point;
@@ -148,6 +149,37 @@ public class Location
             returnString += " " + item;
         }
         return returnString;
+    }
+    
+    public ArrayList<String> getExitsFirstChar()
+    {
+        ArrayList<String> exitChars = new ArrayList<String>();
+        
+        String returnString = "Exits:";
+        Set<String> keys = exits.keySet();
+        
+        for(String exit : keys) {
+            switch(exit) {
+                case "north":
+                    exitChars.add("n");
+                    break;
+                case "east":
+                    exitChars.add("e");
+                    break;
+                case "south":
+                    exitChars.add("s");
+                    break;
+                case "west":
+                    exitChars.add("w");
+                    break;
+            }
+        }
+        
+        
+        for(String exit : keys) {
+            returnString += " " + exit;
+        }
+        return exitChars;
     }
 
     /**

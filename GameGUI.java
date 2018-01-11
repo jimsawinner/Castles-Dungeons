@@ -5,6 +5,9 @@ import javax.swing.*;
 import javax.imageio.*;
 import java.io.File;
 
+import java.util.HashMap;
+import java.util.ArrayList;
+
 import java.io.InputStream;
 
 /**
@@ -16,7 +19,7 @@ import java.io.InputStream;
 public class GameGUI extends JFrame
 {
     // instance variables - replace the example below with your own
-    private int x;
+    private HashMap<String, JButton> buttons;
     
     final static boolean shouldFill = true;
     final static boolean shouldWeightX = false;
@@ -34,7 +37,7 @@ public class GameGUI extends JFrame
     public GameGUI()
     {
         // initialise instance variables
-        x = 0;
+        buttons = new HashMap<String, JButton>();
         
         this.setResizable(false);
         
@@ -74,6 +77,7 @@ public class GameGUI extends JFrame
     {
         // Fetch the command from field1 ...
         Command command = parser.getCommandFromText(commandText);
+        
         finished = processCommand(command);
         if (finished == true)
         // Game is over
@@ -82,7 +86,43 @@ public class GameGUI extends JFrame
             System.exit(0);
         }
         
+        LocationType type = g1.player1.getCurrentPosition().getLocationType();
+        //System.out.println(type);
         
+        switch(type){
+            case OUTSIDE:
+                changeImageLabel(imageLabel, "images/forest.png");
+                break;
+            case BRIDGE:
+                changeImageLabel(imageLabel, "images/bridge-gates.png");
+                break;
+
+        }
+        
+        // disable n,e,s,w buttons and re-enable if exit exists
+        buttons.get("N").setEnabled(false);
+        buttons.get("W").setEnabled(false);
+        buttons.get("S").setEnabled(false);
+        buttons.get("W").setEnabled(false);
+        
+        ArrayList<String> exits = g1.player1.getCurrentPosition().getExitsFirstChar();
+        
+        for (int i = 0; i < exits.size(); i++) {
+            switch(exits.get(i)) {
+                case "n":
+                    buttons.get("N").setEnabled(true);
+                    break;
+                case "e":
+                    buttons.get("E").setEnabled(true);
+                    break;
+                case "s":
+                    buttons.get("S").setEnabled(true);
+                    break;
+                case "w":
+                    buttons.get("W").setEnabled(true);
+                    break;
+            }
+        }
     }
     
     /**
@@ -163,10 +203,10 @@ public class GameGUI extends JFrame
             public void actionPerformed(ActionEvent e) 
             {
                 processGameAction("go north");
-                changeImageLabel(imageLabel, "images/bridge-gates.png");
             }
         });
         pane.add(button, c);
+        buttons.put("N", button);
         
         button = new JButton("S");
         c.gridx = 1;
@@ -175,10 +215,10 @@ public class GameGUI extends JFrame
             public void actionPerformed(ActionEvent e) 
             {
                 processGameAction("go south");
-                changeImageLabel(imageLabel, "images/forest.png");
             }
         });
         pane.add(button, c);
+        buttons.put("S", button);
         
         button = new JButton("W");
         c.gridx = 0;
@@ -191,6 +231,7 @@ public class GameGUI extends JFrame
             }
         });
         pane.add(button, c);
+        buttons.put("W", button);
     
         button = new JButton("E");
         c.gridx = 2;
@@ -202,6 +243,7 @@ public class GameGUI extends JFrame
             }
         });
         pane.add(button, c);
+        buttons.put("E", button);
         
         JLabel label = new JLabel("Player Stats");
         c.gridx = 9;
@@ -345,18 +387,6 @@ public class GameGUI extends JFrame
         BufferedImage bufImage = new BufferedImage(10, 10, BufferedImage.TYPE_INT_RGB);
         
         return bufImage;
-    }
-    
-    /**
-     * An example of a method - replace this comment with your own
-     *
-     * @param  y  a sample parameter for a method
-     * @return    the sum of x and y
-     */
-    public int sampleMethod(int y)
-    {
-        // put your code here
-        return x + y;
     }
     
     private void showDialog()
