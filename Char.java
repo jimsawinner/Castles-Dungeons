@@ -13,6 +13,7 @@ public abstract class Char
     // instance variables - replace the example below with your own
     protected Location currentPosition;   // the players current position
     protected int hp; // health points
+    protected int maxHp; // max health points
     protected int ap; // attack points
     protected int dp; // defence points
     protected int maxStorage;
@@ -44,6 +45,11 @@ public abstract class Char
     public int getHp()
     {
         return this.hp;
+    }
+    
+    public int getMaxHp()
+    {
+        return this.maxHp;
     }
     
     public int getAp()

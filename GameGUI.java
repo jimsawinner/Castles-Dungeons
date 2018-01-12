@@ -43,23 +43,40 @@ public class GameGUI extends JFrame
         components = new HashMap<String, JComponent>();
         
         this.setResizable(false);
-        
-        g1 = new Game();
+
         finished = false;
         parser = new Parser();
         
         setup();
         
+        play();
+        
+        //HelpGUI help = new HelpGUI();
+        
+    }
+    
+    private void play()
+    {
+        g1 = new Game();
+        
         checkAndEnableButtons();
         checkAndPopulateInventoryList();
+        checkAndPopulateCharacterList();
+        
+        updateAllLabels();
         updateLocationLabel();
         updateHostagesLabel("0");
+        updateHealthLabel();
         updateStatusLabel("Game Ready");
         
         g1.log("Game Ready", "info");
         
-        //HelpGUI help = new HelpGUI();
-        
+        changeImageLabel(imageLabel, "images/forest.png");
+    }
+    
+    private void updateAllLabels()
+    {
+        updateHealthLabel();
     }
     
     private void updateStatusLabel(String label)
@@ -72,6 +89,14 @@ public class GameGUI extends JFrame
     {
         JLabel hostagesLabel = (JLabel) components.get("hostageLabel");
         hostagesLabel.setText("Hostages Saved: "+amount+"/4");
+    }
+    
+    private void updateHealthLabel()
+    {
+        String health = Integer.toString(g1.player1.getHp());
+        String maxHealth = Integer.toString(g1.player1.getMaxHp());
+        JLabel healthLabel = (JLabel) components.get("healthLabel");
+        healthLabel.setText("Health: "+health+"/"+maxHealth);
     }
     
     
@@ -95,6 +120,21 @@ public class GameGUI extends JFrame
             roomItemsList.setListData(roomItems.toArray());
         }else{
             roomItemsList.setListData(nullInventory);
+        }
+    }
+    
+    private void checkAndPopulateCharacterList()
+    {
+        JList characterList = (JList) components.get("characterList");
+        
+        String[] nullCharacters = {};
+        
+        ArrayList<String> characterArray = g1.player1.getCurrentPosition().getCharactersArray();
+        
+        if(characterArray != null){
+            characterList.setListData(characterArray.toArray());
+        }else{
+            characterList.setListData(nullCharacters);
         }
     }
     
@@ -207,7 +247,9 @@ public class GameGUI extends JFrame
         
         checkAndEnableButtons();
         checkAndPopulateInventoryList();
+        checkAndPopulateCharacterList();
         updateLocationLabel();
+        updateAllLabels();
     }
     
     /**
@@ -233,12 +275,20 @@ public class GameGUI extends JFrame
             if(g1.player1.move(direction)){
                 updateStatusLabel(g1.player1.getCurrentPosition().getLongDescription());
             }else{
-                updateStatusLabel("There is no door!");
+                updateStatusLabel("You have no remaining health to move!");
             }
         }
         else if (commandWord == CommandWord.QUIT) {
             //System.exit(0);
             wantToQuit = true;
+        }
+        else if (commandWord == CommandWord.USE) {
+            if(g1.player1.useItem(command.getSecondWord())){
+                updateStatusLabel(command.getSecondWord()+" used");
+                updateAllLabels();
+            }else{
+                updateStatusLabel("Cannot use item");
+            }
         }
         else if (commandWord == CommandWord.FREE) {
             //System.exit(0);
@@ -344,14 +394,14 @@ public class GameGUI extends JFrame
         buttons.put("E", button);
         
         JLabel label = new JLabel("Player Stats");
-        c.gridx = 9;
+        c.gridx = 3;
         c.gridy = 0;
         label.setFont(new Font("Sans-Serif", Font.BOLD, 20));
         
         pane.add(label, c);
         
         JLabel locationLabel = new JLabel("Location: ");
-        c.gridx = 9;
+        c.gridx = 3;
         c.gridy = 1;
         //label.setFont(new Font("Sans-Serif"));
         
@@ -359,12 +409,20 @@ public class GameGUI extends JFrame
         components.put("locationLabel", locationLabel);
         
         JLabel hostageLabel = new JLabel("Hostages Saved: ");
-        c.gridx = 9;
+        c.gridx = 3;
         c.gridy = 2;
         //label.setFont(new Font("Sans-Serif"));
         
         pane.add(hostageLabel, c);
         components.put("hostageLabel", hostageLabel);
+        
+        JLabel healthLabel = new JLabel("Health: ");
+        c.gridx = 3;
+        c.gridy = 3;
+        //label.setFont(new Font("Sans-Serif"));
+        
+        pane.add(healthLabel, c);
+        components.put("healthLabel", healthLabel);
         
         // controls panel
         Image dimg = loadImage("images/forest.png").getScaledInstance(800, 200, Image.SCALE_SMOOTH);
@@ -397,8 +455,21 @@ public class GameGUI extends JFrame
         pane.add(list, c);
         components.put("inventory", list);
         
+        button = new JButton("Use");
+        c.gridx = 0;
+        c.gridy = 7;
+        c.gridwidth = 1; // 3 columns wide
+        button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) 
+            {
+                processGameAction("use ether");
+            }
+        });
+        pane.add(button, c);
+        buttons.put("useItem", button);
+        
         label = new JLabel("Room Items");
-        c.gridx = 4; // fourth column
+        c.gridx = 3; // fourth column
         c.gridy = 5; // fifth row
         c.gridwidth = 3; // 3 columns wide
         
@@ -407,14 +478,14 @@ public class GameGUI extends JFrame
         JList list2 = new JList(inventory);
         
         // setup location on pane
-        c.gridx = 4; // 4th column
+        c.gridx = 3; // 4th column
         c.gridy = 6; // sixth row
         
         pane.add(list2, c);
         components.put("locationItems", list2);
         
         label = new JLabel("Players Here");
-        c.gridx = 7; // seventh column
+        c.gridx = 6; // seventh column
         c.gridy = 5; // fifth row
         c.gridwidth = 3; // 3 columns wide
         
@@ -424,15 +495,17 @@ public class GameGUI extends JFrame
         JList list3 = new JList(characters);
         
         // setup location on pane
-        c.gridx = 7; // 4th column
+        c.gridx = 6; // 4th column
         c.gridy = 6; // sixth row
+        c.gridwidth = 3; // 3 columns wide
         
         pane.add(list3, c);
-        components.put("charactersList", list3);
+        components.put("characterList", list3);
         
         button = new JButton("Free Hostage");
-        c.gridx = 7;
+        c.gridx = 6;
         c.gridy = 7;
+        c.gridwidth = 3; // 3 columns wide
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) 
             {
@@ -441,16 +514,6 @@ public class GameGUI extends JFrame
         });
         pane.add(button, c);
         buttons.put("freeHostage", button);
-        
-        // setup location on pane
-        c.gridx = 4; // 4th column
-        c.gridy = 6; // sixth row
-        // setup location on pane
-        c.gridx = 4; // 4th column
-        c.gridy = 6; // sixth row
-        
-        pane.add(list2, c);
-        components.put("locationItems", list2);
         
         
         // add a status label (to fill the space)
@@ -550,6 +613,17 @@ public class GameGUI extends JFrame
         
         // add to the menu bar
         menuBar.add(menu);
+        
+        menuItem = new JMenuItem("Restart Game", KeyEvent.VK_T);
+        menuItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) 
+            {
+                //call the processGameAction hardcoding quit as command
+                play();
+            }
+        });
+        
+        menu.add(menuItem);
         
         menuItem = new JMenuItem("Quit", KeyEvent.VK_T);
         menuItem.addActionListener(new ActionListener() {

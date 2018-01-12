@@ -44,7 +44,7 @@ public class Item
      * 
      * @return  the items hit points value
      */
-    public int getHitPoints()
+    public int getHealthPoints()
     {
         return this.hp;
     }

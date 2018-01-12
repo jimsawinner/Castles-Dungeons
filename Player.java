@@ -23,7 +23,8 @@ public class Player extends Char
      */
     public Player()
     {
-        this.hp = 100; // players health points
+        this.hp = 150; // players health points
+        this.maxHp = 150; // players health points
         //inventory = new HashMap<String, Item>(); // new empty hashmap for inventory
     }
     
@@ -36,6 +37,10 @@ public class Player extends Char
      */
     public boolean move(String direction)
     {
+        if(hp < 1){
+            return false;
+        }
+        
         // Try to leave current room.
         Location nextLocation = getCurrentPosition().getExit(direction);
 
@@ -74,16 +79,34 @@ public class Player extends Char
             }
         }
         
+        this.hp = hp - 1;
+        
         return true;
     }
     
     public boolean freeHostage(String hostageName)
     {
         if(getCurrentPosition().hasNpc(hostageName)){
-            getCurrentPosition().removeNPC(hostageName);
+            if(hasItem("key")){
+                getCurrentPosition().removeNPC(hostageName);
+                removeItem("key");
+            }else{
+                return false;
+            }
         }else{
             return false;
         }
+        return true;
+    }
+    
+    public boolean useItem(String itemName)
+    {
+        if(!this.hasItem(itemName)){
+            return false;
+        }else{
+            this.hp = getItem(itemName).getHealthPoints();
+        }
+        
         return true;
     }
 }

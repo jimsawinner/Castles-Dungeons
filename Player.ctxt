@@ -9,4 +9,6 @@ comment2.target=boolean\ move(java.lang.String)
 comment2.text=\n\ Move\ -\ player\ moves\ to\ a\ new\ location\n\ \n\ @since\ v0.02\n\ @params\ \ String\ \ direction\n\ @return\ \ true\ if\ the\ move\ was\ successful\ otherwise\ false\n
 comment3.params=hostageName
 comment3.target=boolean\ freeHostage(java.lang.String)
-numComments=4
+comment4.params=itemName
+comment4.target=boolean\ useItem(java.lang.String)
+numComments=5

@@ -110,6 +110,19 @@ public class Location
         return returnString;
     }
     
+    public ArrayList<String> getCharactersArray()
+    {
+        if(!hasNPCs()){
+            return null;
+        }
+        ArrayList<String> charactersArray = new ArrayList<String>();
+        Set<String> keys = npcs.keySet();
+        for(String item : keys) {
+            charactersArray.add(item);
+        }
+        return charactersArray;
+    }
+    
     /**
      * Return a string describing the location's exits, for example
      * "Exits: north west".
@@ -258,6 +271,11 @@ public class Location
     
     public boolean hasNpc(String k){
         return npcs.containsKey(k);
+    }
+    
+    public boolean hasNPCs()
+    {
+        return !npcs.isEmpty();
     }
     
     /**

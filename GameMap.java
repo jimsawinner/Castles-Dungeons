@@ -72,7 +72,7 @@ public class GameMap
         createPointOnMap(-2,-4,"rummaging through forest", LocationType.OUTSIDE);
         
         // debug inventory!!!
-        //getLocationByPoint(new Point(2, -4)).addItem("coin", new Item("item", 0, 30));;
+        //getLocationByPoint(new Point(2, -4)).addItem("ether", new Item("item", 0, 30));;
         
         // west tunnel & guard room
         createPointOnMap(-2,-1,"standing in a guard room", LocationType.GUARDED);
@@ -188,11 +188,11 @@ public class GameMap
                 // Give a 50% chance of this location gaining an item
                 float chance = rand.nextFloat();
                 
-                if (chance <= 0.25f) {
+                if (chance <= 0.10f) {
                     newLocation.addItem("ether", new Item("Health  boost.", 0, 10));
-                } else if (chance <= 0.50f){
+                } else if (chance <= 0.20){
                     newLocation.addItem("coin", new Item("A gold coin.", 0, 50));
-                } else if (chance <= 0.80f){
+                } else if (chance <= 0.30f){
                     newLocation.addItem("key", new Item("A key.", 0, 50));
                 }
                 
