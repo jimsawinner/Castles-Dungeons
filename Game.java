@@ -35,6 +35,20 @@ public class Game
      * Create the game and initialise its internal map.
      */
     public Game() 
+    {        
+        player1 = new Player();
+        map = new GameMap();
+        
+        player1.setCurrentPosition(map.getLocationByPoint(new Point(2,-4)));  // start game outside
+        
+        addCharacterToGame(new Point(-6, 7), "Princess", new Character(CharacterType.PRINCESS)); // add a princess to the game
+        addCharacterToGame(new Point(-4, 7), "Princess", new Character(CharacterType.PRINCESS)); // add a princess to the game
+        addCharacterToGame(new Point(4, 7), "Princess", new Character(CharacterType.PRINCESS)); // add a princess to the game
+        addCharacterToGame(new Point(6, 7), "Princess", new Character(CharacterType.PRINCESS)); // add a princess to the game
+        hostages = 4;
+    }
+    
+    public boolean setupLogger()
     {
         // setup the game logger
         try {  
@@ -55,21 +69,14 @@ public class Game
             fh.setFormatter(formatter);  
 
         } catch (SecurityException e) {  
-            e.printStackTrace();  
-        } catch (IOException e) {  
-            e.printStackTrace();  
+            e.printStackTrace(); 
+            return false;
+        } catch (IOException e) { 
+            e.printStackTrace(); 
+            return false;
         }  
         
-        player1 = new Player();
-        map = new GameMap();
-        
-        player1.setCurrentPosition(map.getLocationByPoint(new Point(2,-4)));  // start game outside
-        
-        addCharacterToGame(new Point(-6, 7), "Princess", new Character(CharacterType.PRINCESS)); // add a princess to the game
-        addCharacterToGame(new Point(-4, 7), "Princess", new Character(CharacterType.PRINCESS)); // add a princess to the game
-        addCharacterToGame(new Point(4, 7), "Princess", new Character(CharacterType.PRINCESS)); // add a princess to the game
-        addCharacterToGame(new Point(6, 7), "Princess", new Character(CharacterType.PRINCESS)); // add a princess to the game
-        hostages = 4;
+        return true;
     }
     
 

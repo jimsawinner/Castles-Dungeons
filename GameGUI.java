@@ -67,6 +67,13 @@ public class GameGUI extends JFrame
     {
         g1 = new Game();
         
+        
+        if(!g1.setupLogger()){
+            showDialog();
+            updateStatusLabel("Error setting up logger");
+            
+        }
+        
         checkAndEnableButtons();
         checkAndPopulateInventoryList();
         checkAndPopulateCharacterList();
@@ -818,5 +825,15 @@ public class GameGUI extends JFrame
         JOptionPane.showMessageDialog(frame,
             "Log Directory doesnt exist - creating one now: '" + backupDir + "'.");
         //System.exit(0);
+        
+        // create log directory
+        File file = new File("logs");
+        if (!file.exists()) {
+            if (file.mkdir()) {
+                System.out.println("Directory is created!");
+            } else {
+                System.out.println("Failed to create directory!");
+            }
+        }
     }
 }
