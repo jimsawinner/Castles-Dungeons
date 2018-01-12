@@ -18,6 +18,7 @@ public enum LocationType
     OUTSIDE,
     GUARDED,
     ROOM,
-    DUNGEON
+    DUNGEON,
+    BEDROOM
     
 }

@@ -52,7 +52,9 @@ public class Location
             if (chance <= 0.25f) {
                 addItem("ether", new Item("Health  boost.", 0, 10));
             } else if (chance <= 0.50f){
-                addItem("gold coin", new Item("A gold coin.", 0, 50));
+                addItem("coin", new Item("A gold coin.", 0, 50));
+            } else if (chance <= 0.80f){
+                addItem("key", new Item("A key.", 0, 50));
             }
             
             chance = rand.nextFloat();
@@ -149,6 +151,24 @@ public class Location
             returnString += " " + item;
         }
         return returnString;
+    }
+    
+    /**
+     * Return a array describing the location's items, for example
+     * "Exits: north west".
+     * @return Details of the location's exits.
+     */
+    public ArrayList<String> getItemsArray()
+    {
+        if(!hasItems()){
+            return null;
+        }
+        ArrayList<String> itemsArray = new ArrayList<String>();
+        Set<String> keys = items.keySet();
+        for(String item : keys) {
+            itemsArray.add(item);
+        }
+        return itemsArray;
     }
     
     public ArrayList<String> getExitsFirstChar()

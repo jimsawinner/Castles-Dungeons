@@ -50,10 +50,10 @@ public class GameMap
         createPointOnMap(-1,-1,"in the great hall", LocationType.HALL);
         createPointOnMap(-1,-2,"in the great hall", LocationType.HALL);
         
-        createPointOnMap(0,2, "rumaging through bed chambers", LocationType.ROOM);
-        createPointOnMap(2,1, "rumaging through bed chambers", LocationType.ROOM);
-        createPointOnMap(0,5, "rumaging through bed chambers", LocationType.ROOM);
-        createPointOnMap(-2,5, "rumaging through bed chambers", LocationType.ROOM);
+        createPointOnMap(0,2, "rumaging through bed chambers", LocationType.BEDROOM);
+        createPointOnMap(2,1, "rumaging through bed chambers", LocationType.BEDROOM);
+        createPointOnMap(0,5, "rumaging through bed chambers", LocationType.BEDROOM);
+        createPointOnMap(-2,5, "rumaging through bed chambers", LocationType.BEDROOM);
         createPointOnMap(-3,5, "walking into a bathroom", LocationType.ROOM);
         createPointOnMap(-2,2, "walking into a bathroom", LocationType.ROOM);
         createPointOnMap(2,3, "standing in the kitchen", LocationType.ROOM);
@@ -71,7 +71,7 @@ public class GameMap
         createPointOnMap(-2,-4,"rummaging through forest", LocationType.OUTSIDE);
         
         // debug inventory!!!
-        getLocationByPoint(new Point(2, -4)).addItem("coin", new Item("item", 0, 30));;
+        //getLocationByPoint(new Point(2, -4)).addItem("coin", new Item("item", 0, 30));;
         
         // west tunnel & guard room
         createPointOnMap(-2,-1,"standing in a guard room", LocationType.GUARDED);

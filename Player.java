@@ -41,21 +41,6 @@ public class Player extends Char
     {
         // Try to leave current room.
         Location nextLocation = getCurrentPosition().getExit(direction);
-        
-        /*switch(direction){
-            case "north" :
-                System.out.println("go north");
-                break;
-            case "east" :
-                System.out.println("go east");
-                break;
-            case "west" :
-                System.out.println("go west");
-                break;
-            case "south" :
-                System.out.println("go south");
-                break;
-        }*/
 
         if (nextLocation == null) {
             return false;
@@ -143,7 +128,7 @@ public class Player extends Char
      * 
      * @return Details of the players inventory
      */
-    public ArrayList<String> getInventoryItems()
+    public ArrayList<String> getInventoryItemsArray()
     {
         if(!hasItems()){
             return null;
@@ -226,9 +211,14 @@ public class Player extends Char
             throw new InventoryException("No Item Located");
         }else{
             Item thisItem = this.currentPosition.getItem(itemName);
-            inventory.put(itemName, thisItem);
-            this.currentPosition.removeItem(itemName);
-            return true;
+            Item playerItemKey = inventory.get(itemName);
+            if(playerItemKey != null) {
+                throw new InventoryException("Already have this item");
+            }else{
+                inventory.put(itemName, thisItem);
+                this.currentPosition.removeItem(itemName);
+                return true;
+            }
         }
     }
     

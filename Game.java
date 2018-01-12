@@ -37,19 +37,24 @@ public class Game
      */
     public Game() 
     {
-        // setup the logger
+        // setup the game logger
         try {  
-    
-            // This block configure the logger with handler and formatter  
+            // This block configure the logger with handler and formatter
+            // Get the current date
             Date date = new Date();
+            
+            // create a new file handler
             fh = new FileHandler("logs/logfile-"+ date.getTime() +".log");  
+            
+            // add the filehandler to the logger
             logger.addHandler(fh);
+            
+            // create a new simple formatter
             SimpleFormatter formatter = new SimpleFormatter();  
+            
+            // add the simple formatter to the file handler
             fh.setFormatter(formatter);  
-    
-            // the following statement is used to log any messages  
-            logger.info("My first log");  
-    
+
         } catch (SecurityException e) {  
             e.printStackTrace();  
         } catch (IOException e) {  
@@ -63,27 +68,6 @@ public class Game
         player1.setCurrentPosition(map.getLocationByPoint(new Point(2,-4)));  // start game outside
         
         addCharacterToGame(); // add a princess to the game
-    }
-
-    /**
-     *  Main play routine.  Loops until end of play.
-     */
-    public void play() 
-    {            
-        printWelcome();
-    }
-
-    /**
-     * Print out the opening message for the player.
-     */
-    private void printWelcome()
-    {
-        System.out.println();
-        System.out.println("Welcome to my version of Zuul!");
-        System.out.println("You are in the ground's of a castle. You must collect");
-        System.out.println("all of the items on the map without becoming trapped!");
-        System.out.println();
-        System.out.println(player1.getCurrentPosition().getLongDescription());
     }
     
     /** 

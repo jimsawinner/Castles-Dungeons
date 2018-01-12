@@ -50,25 +50,51 @@ public class GameGUI extends JFrame
         
         setup();
         
-        g1.play();
-        
-        g1.log("Game Ready", "info");
-        
         checkAndEnableButtons();
         checkAndPopulateInventoryList();
+        updateLocationLabel();
+        updateStatusLabel("Game Ready");
         
+        g1.log("Game Ready", "info");
     }
+    
+    private void updateStatusLabel(String label)
+    {
+        JLabel statusLabel = (JLabel) components.get("statusLabel");
+        statusLabel.setText("Status: "+label);
+    }
+    
     
     private void checkAndPopulateInventoryList()
     {
         JList inventoryList = (JList) components.get("inventory");
+        JList roomItemsList = (JList) components.get("locationItems");
+        
         String[] nullInventory = {};
-        ArrayList<String> inventory = g1.player1.getInventoryItems();
+        
+        ArrayList<String> inventory = g1.player1.getInventoryItemsArray();
+        ArrayList<String> roomItems = g1.player1.getCurrentPosition().getItemsArray();
+        
         if(inventory != null){
             inventoryList.setListData(inventory.toArray());
         }else{
             inventoryList.setListData(nullInventory);
         }
+        
+        if(roomItems != null){
+            roomItemsList.setListData(roomItems.toArray());
+        }else{
+            roomItemsList.setListData(nullInventory);
+        }
+    }
+    
+    private void updateLocationLabel()
+    {
+        JLabel locationLabel = (JLabel) components.get("locationLabel");
+        String locationText = g1.player1.getCurrentPosition().getShortDescription();
+        
+        locationLabel.setText("Location: "+locationText);
+        
     }
     
     public void keyPressed(KeyEvent e) {
@@ -137,16 +163,33 @@ public class GameGUI extends JFrame
         //System.out.println(type);
         
         switch(type){
+            case HALL:
+                changeImageLabel(imageLabel, "images/hall.png");
+                break;
             case OUTSIDE:
                 changeImageLabel(imageLabel, "images/forest.png");
                 break;
             case BRIDGE:
                 changeImageLabel(imageLabel, "images/bridge-gates.png");
                 break;
+            case TUNNEL:
+                changeImageLabel(imageLabel, "images/tunnel.png");
+                break;
+            case DUNGEON:
+                changeImageLabel(imageLabel, "images/dungeon.png");
+                break;
+            case BEDROOM:
+                changeImageLabel(imageLabel, "images/bedroom.png");
+                break;
+            case GUARDED:
+                changeImageLabel(imageLabel, "images/guard.png");
+                break;
 
         }
         
         checkAndEnableButtons();
+        checkAndPopulateInventoryList();
+        updateLocationLabel();
     }
     
     /**
@@ -276,6 +319,14 @@ public class GameGUI extends JFrame
         
         pane.add(label, c);
         
+        JLabel locationLabel = new JLabel("Location: ");
+        c.gridx = 9;
+        c.gridy = 1;
+        //label.setFont(new Font("Sans-Serif"));
+        
+        pane.add(locationLabel, c);
+        components.put("locationLabel", locationLabel);
+        
         // controls panel
         Image dimg = loadImage("images/forest.png").getScaledInstance(800, 200, Image.SCALE_SMOOTH);
         
@@ -295,29 +346,57 @@ public class GameGUI extends JFrame
         label = new JLabel("Inventory");
         c.gridx = 0;
         c.gridy = 5;
+        c.insets = new Insets(0, 10, 0, 0); // left padding
+        c.gridwidth = 3; // 3 columns wide
         
         pane.add(label, c);  
         
-        c.ipady = 0; // reset to default
-        c.weighty = 1.0; // request any extra vertical space
-        c.anchor = GridBagConstraints.PAGE_END; // bottom of space
-        c.insets = new Insets(0, 0, 10, 0); // top padding
+        label = new JLabel("Room Inventory");
+        c.gridx = 4;
+        c.gridy = 5;
+        c.gridwidth = 3; // 3 columns wide
+        
+        //label = new JLabel("Room Items");
+        //c.weightx = 1.0; // request any extra horizontal space
+        //c.gridx = 3; // over to the right
+        //c.gridy = 5;
+        
+        pane.add(label, c); 
+        
+        //c.ipady = 0; // reset to default
+
+        //c.insets = new Insets(0, 0, 10, 0); // top padding
         c.gridx = 0; // aligned with button 2
-        c.gridwidth = 1; // 2 columns wide
+        //c.gridwidth = 1; // 2 columns wide
         c.gridy = 6; // third row
         
-        String[] inventory = { "coin", "ether", "key" };
+        String[] inventory = { };
         JList list = new JList(inventory);
         
         pane.add(list, c);
         components.put("inventory", list);
         
-        c.gridx = 0; // aligned with button 2
-        c.gridwidth = 1; // 2 columns wide
-        c.gridy = 6; // third row
+        JList list2 = new JList(inventory);
         
-        pane.add(list, c);
-        components.put("locationItems", list);
+        c.gridx = 4; // left
+        c.gridwidth = 3; // 3 columns wide
+        c.gridy = 6; // sixth row
+        c.insets = new Insets(0, 10, 0, 0); // left padding
+        
+        pane.add(list2, c);
+        components.put("locationItems", list2);
+        
+        // add a status label (to fill the space)
+        label = new JLabel("Status: ");
+        c.weighty = 1.0; // request any extra vertical space
+        c.anchor = GridBagConstraints.PAGE_END; // bottom of space
+        c.gridx = 0; // 0 being the first in a 10x10
+        c.gridy = 9; // 9 being the last in a 10x10
+        c.gridwidth = 10; // take up the whole bottom row
+        c.insets = new Insets(0, 0, 0, 0); // reset left padding
+        
+        pane.add(label, c); 
+        components.put("statusLabel", label);
         
         setupMenu();
         
@@ -331,25 +410,40 @@ public class GameGUI extends JFrame
                     if (index >= 0) {
                         Object o = theList.getModel().getElementAt(index);
                         System.out.println("Double-clicked on: " + o.toString());
-                        g1.player1.dropItem("coin");
+                        g1.player1.dropItem(o.toString());
                         checkAndPopulateInventoryList();
                     }
                 }
             }
         };
         
+        MouseListener secondMouseListener = new MouseAdapter() {
+            public void mouseClicked(MouseEvent mouseEvent) {
+                JList theList = (JList) mouseEvent.getSource();
+                if (mouseEvent.getClickCount() == 2) {
+                    int index = theList.locationToIndex(mouseEvent.getPoint());
+                    if (index >= 0) {
+                        Object o = theList.getModel().getElementAt(index);
+                        System.out.println("Double-clicked on: " + o.toString());
+                        try{
+                            g1.player1.takeItem(o.toString());
+                            checkAndPopulateInventoryList();
+                        }catch(Exception e){
+                            updateStatusLabel(e.toString());
+                        }
+                    }
+                }
+            }
+        };
+        
         components.get("inventory").addMouseListener(mouseListener);
+        components.get("locationItems").addMouseListener(secondMouseListener);
     
         
         this.setLocationRelativeTo(null);
         this.setVisible(true);
         
-        showDialog();
-        try{
-            g1.player1.takeItem("coin");
-        }catch(Exception ex){
-            System.out.println("Error taking coin");
-        }
+        //showDialog();
     }
     
     private void changeImageLabel(JLabel label, String imageFileName)
