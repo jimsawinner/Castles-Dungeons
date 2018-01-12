@@ -50,33 +50,6 @@ public class Player extends Char
             return false;
         } else {
             setCurrentPosition(nextLocation);
-            //System.out.println(nextLocation.getItemString());
-            HashMap<String, Character> npcs = nextLocation.getNPCs();
-            
-            if (npcs.size() > 0) {
-                System.out.println("Characters Here: ");
-            }
-            
-            //Iterate over the npcs HashMap and printout the contents
-            Iterator entries = npcs.entrySet().iterator();
-            while (entries.hasNext()) {
-                HashMap.Entry entry = (HashMap.Entry) entries.next();
-                String key = (String)entry.getKey();
-                Character value = (Character)entry.getValue();
-                System.out.println(key + "Health: " + value.getHealthPoints());
-                
-                switch(key) {
-                    case "Dragon":
-                        //System.out.println("The Dragon breathes fire in your direction");
-                        break;
-                    case "Witch":
-                        //System.out.println("The witch is attempting to cast a spell on you");
-                        break;
-                    case "Princess":
-                        System.out.println("A princess is trapped. Find the keys to free her");
-                        break;
-                }
-            }
         }
         
         this.hp = hp - 1;
@@ -104,8 +77,13 @@ public class Player extends Char
         if(!this.hasItem(itemName)){
             return false;
         }else{
-            this.hp = getItem(itemName).getHealthPoints();
+            this.hp = this.hp + getItem(itemName).getHealthPoints();
+            if(this.hp > maxHp){
+                this.hp = maxHp;
+            }
         }
+        
+        this.removeItem(itemName);
         
         return true;
     }

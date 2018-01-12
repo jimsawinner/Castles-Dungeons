@@ -71,24 +71,9 @@ public class Location
      */
     public String getLongDescription()
     {
-        String locationMessage = "You are " + description + ".\n At Position: " + point.getX() + "," + point.getY() + "\n" + getExitString();
+        String locationMessage = "You are " + description + ".\n At Position: " + point.getX() + "," + point.getY() + "\n";
         return locationMessage;
         
-    }
-
-    /**
-     * Return a string describing the location's exits, for example
-     * "Exits: north west".
-     * @return Details of the location's exits.
-     */
-    private String getExitString()
-    {
-        String returnString = "Exits:";
-        Set<String> keys = exits.keySet();
-        for(String exit : keys) {
-            returnString += " " + exit;
-        }
-        return returnString;
     }
     
     /**

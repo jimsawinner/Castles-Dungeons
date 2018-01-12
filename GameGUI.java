@@ -15,13 +15,14 @@ import java.util.ArrayList;
 import java.io.InputStream;
 
 /**
- * Write a description of class GameGUI here.
+ * GameGUI is responsible for managing the graphical user experience
  *
- * @author (your name)
- * @version (a version number or a date)
+ * @author Jamie Dixon
+ * @version v0.30
  */
 public class GameGUI extends JFrame
 {
+    
     // instance variables - replace the example below with your own
     private HashMap<String, JButton> buttons;
     private HashMap<String, JComponent> components; //is this recommended?
@@ -29,9 +30,11 @@ public class GameGUI extends JFrame
     // location image (instance variable to be able to change it)
     JLabel imageLabel = new JLabel();
     
+    // a game object
     Game g1; 
+    
+    // still need a parser object temporarily
     private Parser parser;
-    private boolean finished;
 
     /**
      * Constructor for objects of class GameGUI
@@ -42,19 +45,24 @@ public class GameGUI extends JFrame
         buttons = new HashMap<String, JButton>();
         components = new HashMap<String, JComponent>();
         
+        // we dont want the windows resizable from its 800x600
         this.setResizable(false);
-
-        finished = false;
+        
+        // new parser object
         parser = new Parser();
         
+        // setup the GUI components (buttons, labels etc)
         setup();
         
+        // if we got this far play the game!
         play();
-        
-        //HelpGUI help = new HelpGUI();
-        
     }
     
+    /**
+     * Player - calls a bunch of methods to set the state
+     * of the components within the interface
+     * 
+     */
     private void play()
     {
         g1 = new Game();
@@ -74,23 +82,42 @@ public class GameGUI extends JFrame
         changeImageLabel(imageLabel, "images/forest.png");
     }
     
+    /**
+     * updateAllLabels calls all the methods to update just 
+     * the label components
+     */
     private void updateAllLabels()
     {
         updateHealthLabel();
     }
     
+    /**
+     * updateStatusLabels updates the status label with a new message
+     * 
+     * @param String label - the label for the status bar
+     */
     private void updateStatusLabel(String label)
     {
         JLabel statusLabel = (JLabel) components.get("statusLabel");
         statusLabel.setText("Status: "+label);
     }
     
+    /**
+     * updateHostagesLabel updates the hostages label with
+     * the current amount of saved hostages (and total)
+     * 
+     * @param String amount - the amount of hostages saved so far.
+     */
     private void updateHostagesLabel(String amount)
     {
         JLabel hostagesLabel = (JLabel) components.get("hostageLabel");
         hostagesLabel.setText("Hostages Saved: "+amount+"/4");
     }
     
+    /**
+     * updateHealthLabel updates the health label
+     *
+     */
     private void updateHealthLabel()
     {
         String health = Integer.toString(g1.player1.getHp());
@@ -100,6 +127,12 @@ public class GameGUI extends JFrame
     }
     
     
+    /**
+     * checkAndPopulateInventoryList will get the current items in
+     * both the players inventory and the locations inventory and
+     * populate the respective lists with these items
+     * 
+     */
     private void checkAndPopulateInventoryList()
     {
         JList inventoryList = (JList) components.get("inventory");
@@ -201,16 +234,11 @@ public class GameGUI extends JFrame
         // Fetch the command from field1 ...
         Command command = parser.getCommandFromText(commandText);
         
-        finished = processCommand(command);
-        if (finished == true)
-        // Game is over
-        {
-            System.out.println("Thank you for playing.  Good bye.");
-            System.exit(0);
-        }
+        
+        // know if the user is quitting
+        processCommand(command);
         
         LocationType type = g1.player1.getCurrentPosition().getLocationType();
-        //System.out.println(type);
         
         switch(type){
             case HALL:
@@ -291,7 +319,6 @@ public class GameGUI extends JFrame
             }
         }
         else if (commandWord == CommandWord.FREE) {
-            //System.exit(0);
             try{
                 if(g1.player1.freeHostage(command.getSecondWord())){
                     int freed = (int) g1.decrementHostages();
@@ -306,21 +333,7 @@ public class GameGUI extends JFrame
                 
             }
         }
-        else if (commandWord == CommandWord.LOOK) {
-            if(!command.hasSecondWord()){
-                try{
-                    System.out.println(g1.player1.getCurrentPosition().getItemString());
-                }catch(Exception e){
-                    System.out.println("Error! Could not getItem().getName()");
-                }
-            }else{
-                try{
-                    System.out.println(g1.player1.getInventoryString());
-                }catch(Exception e){
-                    System.out.println("Error! Could not getItem().getName()");
-                }
-            }
-        }
+        
         // else command not recognised.
         return wantToQuit;
     }
@@ -630,7 +643,7 @@ public class GameGUI extends JFrame
             public void actionPerformed(ActionEvent e) 
             {
                 //call the processGameAction hardcoding quit as command
-                processGameAction("quit");
+                System.exit(0);
             }
         });
         
@@ -668,8 +681,6 @@ public class GameGUI extends JFrame
         
         // add show help to menu option
         menu.add(menuItem);
-        
-
         
         this.setJMenuBar(menuBar);
     }

@@ -189,7 +189,7 @@ public class GameMap
                 float chance = rand.nextFloat();
                 
                 if (chance <= 0.10f) {
-                    newLocation.addItem("ether", new Item("Health  boost.", 0, 10));
+                    newLocation.addItem("ether", new Item("Health  boost.", 10, 10));
                 } else if (chance <= 0.20){
                     newLocation.addItem("coin", new Item("A gold coin.", 0, 50));
                 } else if (chance <= 0.30f){
