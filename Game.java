@@ -65,10 +65,10 @@ public class Game
         
         player1.setCurrentPosition(map.getLocationByPoint(new Point(2,-4)));  // start game outside
         
-        addCharacterToGame(new Point(-6, 7), new Character(CharacterType.PRINCESS)); // add a princess to the game
-        addCharacterToGame(new Point(-4, 7), new Character(CharacterType.PRINCESS)); // add a princess to the game
-        addCharacterToGame(new Point(4, 7), new Character(CharacterType.PRINCESS)); // add a princess to the game
-        addCharacterToGame(new Point(6, 7), new Character(CharacterType.PRINCESS)); // add a princess to the game
+        addCharacterToGame(new Point(-6, 7), "Princess", new Character(CharacterType.PRINCESS)); // add a princess to the game
+        addCharacterToGame(new Point(-4, 7), "Princess", new Character(CharacterType.PRINCESS)); // add a princess to the game
+        addCharacterToGame(new Point(4, 7), "Princess", new Character(CharacterType.PRINCESS)); // add a princess to the game
+        addCharacterToGame(new Point(6, 7), "Princess", new Character(CharacterType.PRINCESS)); // add a princess to the game
         hostages = 4;
     }
     
@@ -93,9 +93,9 @@ public class Game
             }
     }
     
-    private void addCharacterToGame(Point location, Character character)
+    private void addCharacterToGame(Point location, String name, Character character)
     {
-        map.getLocationByPoint(location).addNPC("princess", character);
+        map.getLocationByPoint(location).addNPC(name, character);
     }
     
     public int decrementHostages()

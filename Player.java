@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.Set;
 import java.awt.Point;
 import java.util.Iterator;
+import java.util.Random;
 
 /**
  * Player class - will be responsible for handling
@@ -14,6 +15,7 @@ import java.util.Iterator;
 public class Player extends Char
 {
     //private HashMap<String, Item> inventory;    // collection of items
+    private Random generator = new Random();
 
     /**
      * Constructor for objects of class Player
@@ -89,6 +91,17 @@ public class Player extends Char
                     }
                     break;
                 case "coin":
+                    double chance = generator.nextDouble();
+                    System.out.println(chance);
+                    
+                    if(!this.getCurrentPosition().isLocked()){
+                        throw new InventoryException("No guards to bribe");
+                    }
+                    
+                    if(chance < 0.5){
+                        throw new InventoryException("Guard would not be bribed");
+                    }
+                    
                     this.getCurrentPosition().unlockExits();
                     break;
                 default:

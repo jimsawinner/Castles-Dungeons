@@ -14,6 +14,7 @@ public class Item
     private int itemType;
     private int hp;
     private int damagePoints;
+    private String description;
 
     /**
      * Constructor for objects of class Item
@@ -25,6 +26,12 @@ public class Item
         this.name = name;
         this.hp = hp;
         this.damagePoints = damagePoints;
+        
+        if(this.hp > 0){
+            this.description = name+" - heals by " +hp+ " health points.";
+        }else{
+            this.description = name;
+        }
     }
 
     /**
@@ -57,5 +64,15 @@ public class Item
     public int getDamagePoints()
     {
         return this.damagePoints;
+    }
+    
+    public String getDescription()
+    {
+        return this.description;
+    }
+    
+    public void setDescription(String description)
+    {
+        this.description = description;
     }
 }

@@ -90,6 +90,7 @@ public class GameGUI extends JFrame
     private void updateAllLabels()
     {
         updateHealthLabel();
+        updateItemDescriptionLabel("");
     }
     
     /**
@@ -169,7 +170,7 @@ public class GameGUI extends JFrame
             characterList.setListData(characterArray.toArray());
             for(int i = 0; i < characterArray.toArray().length; i++){
                 switch((String) characterList.getModel().getElementAt(i)){
-                    case "princess":
+                    case "Princess":
                         buttons.get("freeHostage").setEnabled(true);
                         break;
                     default:
@@ -187,6 +188,13 @@ public class GameGUI extends JFrame
         String locationText = g1.player1.getCurrentPosition().getShortDescription();
         
         locationLabel.setText("Location: "+locationText);
+        
+    }
+    
+    private void updateItemDescriptionLabel(String itemDescription)
+    {   
+        JLabel itemInfoLabel = (JLabel) components.get("itemInfoLabel");
+        itemInfoLabel.setText(itemDescription);
         
     }
     
@@ -249,21 +257,14 @@ public class GameGUI extends JFrame
     
     private void processGameAction(String commandText)
     {
-        // Fetch the command from field1 ...
+        // parse the command by text
         Command command = parser.getCommandFromText(commandText);
         
-        
-        // know if the user is quitting
+        // process the command
         processCommand(command);
         
+        // determine the location type
         LocationType type = g1.player1.getCurrentPosition().getLocationType();
-
-        if(g1.player1.getCurrentPosition().isLocked()){
-            String locationInfoText = "The guard may need bribing try using a coin!";
-            updateLocationInfoLabel(locationInfoText);
-        }else{
-            updateLocationInfoLabel("");
-        }
         
         switch(type){
             case HALL:
@@ -286,6 +287,12 @@ public class GameGUI extends JFrame
                 break;
             case GUARDED:
                 changeImageLabel(imageLabel, "images/guard.png");
+                if(g1.player1.getCurrentPosition().isLocked()){
+                    String locationInfoText = "The guard may need bribing try using a coin!";
+                    updateLocationInfoLabel(locationInfoText);
+                }else{
+                    updateLocationInfoLabel("");
+                }
                 break;
             case ENTRANCE:
                 changeImageLabel(imageLabel, "images/entrance.png");
@@ -339,7 +346,7 @@ public class GameGUI extends JFrame
         else if (commandWord == CommandWord.USE) {
             try{
                 g1.player1.useItem(command.getSecondWord());
-                updateStatusLabel(command.getSecondWord()+" used");
+                updateStatusLabel("Guard successfully bribed");
                 updateAllLabels();
             }catch(Exception e){
                 updateStatusLabel(e.toString());
@@ -352,7 +359,7 @@ public class GameGUI extends JFrame
                     freed = 4 - freed;
                     
                     updateHostagesLabel(""+freed);
-                    updateStatusLabel("Hostage Freed");
+                    updateStatusLabel(command.getSecondWord()+" Freed");
                 }else{
                     updateStatusLabel("Find the key!");
                 }
@@ -504,13 +511,23 @@ public class GameGUI extends JFrame
         c.gridx = 0; // first column
         c.gridy = 7; // sixth row
         JList list = new JList(inventory);
+        list.setToolTipText("Single click for description, Double click to drop");
         
         pane.add(list, c);
         components.put("inventory", list);
         
+        label = new JLabel("Click an item for description");
+        c.gridx = 0; // first column
+        c.gridy = 8; // fifth row
+        c.insets = new Insets(0, 10, 0, 0); // left padding
+        c.gridwidth = 3; // 3 columns wide
+        
+        pane.add(label, c); 
+        components.put("itemInfoLabel", label);
+        
         button = new JButton("Use");
         c.gridx = 0;
-        c.gridy = 8;
+        c.gridy = 9;
         c.gridwidth = 1; // 3 columns wide
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) 
@@ -535,6 +552,8 @@ public class GameGUI extends JFrame
         c.gridx = 3; // 4th column
         c.gridy = 7; // sixth row
         
+        list2.setToolTipText("Double click to pickup");
+        
         pane.add(list2, c);
         components.put("locationItems", list2);
         
@@ -552,6 +571,8 @@ public class GameGUI extends JFrame
         c.gridx = 6; // 4th column
         c.gridy = 7; // sixth row
         c.gridwidth = 3; // 3 columns wide
+        
+        list3.setToolTipText("Single Click for description.");
         
         pane.add(list3, c);
         components.put("characterList", list3);
@@ -591,7 +612,7 @@ public class GameGUI extends JFrame
         c.anchor = GridBagConstraints.PAGE_END; // bottom of space
         c.gridx = 0; // 0 being the first in a 10x10
         c.gridy = 10; // 9 being the last in a 10x10
-        c.gridwidth = 10; // take up the whole bottom row
+        c.gridwidth = 11; // take up the whole bottom row
         c.insets = new Insets(0, 0, 0, 0); // reset left padding
         
         pane.add(label, c); 
@@ -610,16 +631,26 @@ public class GameGUI extends JFrame
                         Object o = theList.getModel().getElementAt(index);
                         String itemName = o.toString();
                         try{
-                            if(g1.player1.dropItem(itemName)){
-                                updateStatusLabel("Dropped "+itemName);
-                                g1.log("Player dropped item: "+itemName, "info");
-                            }else{
-                                System.out.println("No " +itemName+ " in inventory.");
-                            }
+                            g1.player1.dropItem(itemName);
+                            updateStatusLabel("Dropped "+itemName);
+                            g1.log("Player dropped item: "+itemName, "info");
                         }catch(Exception e){
                             updateStatusLabel(e.toString());
                         }
                         checkAndPopulateInventoryList();
+                    }
+                } else if (mouseEvent.getClickCount() == 1) {
+                    int index = theList.locationToIndex(mouseEvent.getPoint());
+                    if (index >= 0) {
+                        Object o = theList.getModel().getElementAt(index);
+                        String itemName = o.toString();
+                        try{
+                            String description = g1.player1.getItem(itemName).getDescription();
+                            updateItemDescriptionLabel(description);
+                        }catch(Exception e){
+                            updateStatusLabel(e.toString());
+                        }
+                        //checkAndPopulateInventoryList();
                     }
                 }
             }
