@@ -71,7 +71,7 @@ public class GameGUI extends JFrame
         if(!g1.setupLogger()){
             showDialog();
             updateStatusLabel("Error setting up logger");
-            
+            g1.setupLogger();
         }
         
         checkAndEnableButtons();
@@ -791,6 +791,8 @@ public class GameGUI extends JFrame
                 myFile.delete();
             }
         }
+        
+        file.delete();
     }
     
     
@@ -830,9 +832,9 @@ public class GameGUI extends JFrame
         File file = new File("logs");
         if (!file.exists()) {
             if (file.mkdir()) {
-                System.out.println("Directory is created!");
+                //System.out.println("Directory is created!");
             } else {
-                System.out.println("Failed to create directory!");
+                //System.out.println("Failed to create directory!");
             }
         }
     }
