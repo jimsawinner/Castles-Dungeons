@@ -15,7 +15,8 @@ public abstract class Char
     protected int hp; // health points
     protected int maxHp; // max health points
     protected int ap; // attack points
-    protected int dp; // defence points
+    protected int dp; // damage points
+    
     protected int maxStorage;
     protected HashMap<String, Item> inventory;    // collection of items
 
@@ -35,15 +36,7 @@ public abstract class Char
         return true;
     }
     
-    public boolean defend(Char attacker)
-    {
-        // this character/player defending and attack
-        this.hp = this.hp - attacker.getAp();
-        return true;
-    }
-    
-    public int getHp()
-    {
+    public int getHealthPoints() {
         return this.hp;
     }
     
@@ -55,6 +48,12 @@ public abstract class Char
     public int getAp()
     {
         return this.ap;
+    }
+    
+    public int getDamagePoints()
+    {
+        //return 100;
+        return this.dp;
     }
     
     /**

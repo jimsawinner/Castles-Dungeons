@@ -27,6 +27,7 @@ public class Player extends Char
     {
         this.hp = 150; // players health points
         this.maxHp = 150; // players health points
+        this.ap = 12;
         //inventory = new HashMap<String, Item>(); // new empty hashmap for inventory
     }
     
@@ -92,7 +93,7 @@ public class Player extends Char
                     break;
                 case "coin":
                     double chance = generator.nextDouble();
-                    System.out.println(chance);
+                    //System.out.println(chance);
                     
                     if(!this.getCurrentPosition().isLocked()){
                         throw new InventoryException("No guards to bribe");
@@ -114,10 +115,23 @@ public class Player extends Char
         return true;
     }
     
-    public boolean attack(String opponentName)
+    public boolean attack(String opponentName) throws CharacterException
     {
-        this.getCurrentPosition().getNPC(opponentName);
+        if(this.hp < 1){
+            throw new CharacterException("No health remaining to attack");
+        }
         
+        int damagePoints = this.getCurrentPosition().getNPC(opponentName).getDamagePoints();
+        
+        try{
+            this.getCurrentPosition().getNPC(opponentName).defend(this);
+        }catch(Exception e){
+            this.getCurrentPosition().removeNPC(opponentName);
+            throw new CharacterException(opponentName+" killed!");
+            //System.out.println(e);
+        }
+        
+        this.hp = this.hp - damagePoints; 
         return true;
     }
     

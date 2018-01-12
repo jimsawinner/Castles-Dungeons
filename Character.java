@@ -9,9 +9,7 @@
  */
 public class Character extends Char
 {
-    // instance variables
-    private int dp; // damage points
-    
+    // instance variables    
     private CharacterType charType;
 
     /**
@@ -23,26 +21,35 @@ public class Character extends Char
         this.charType = characterType;
         switch(characterType){
             case DRAGON:
-                this.hp = 250;
+                this.hp = 50;
                 this.dp = 10;
                 break;
             case MONSTER:
-                this.hp = 150;
+                this.hp = 25;
                 this.dp = 7;
                 break;
             case WITCH:
-                this.hp = 50;
+                this.hp = 20;
                 this.dp = 5;
                 break;
+            default:
+                //System.out.println("Error");
         }
-    }
-    
-    public int getHealthPoints() {
-        return this.hp;
     }
     
     public CharacterType getCharType()
     {
         return this.charType;
+    }
+    
+    public boolean defend(Char attacker) throws CharacterException
+    {
+        // this character/player defending and attack
+        this.hp = this.hp - attacker.getAp();
+        
+        if(this.hp < 0){
+            throw new CharacterException("CharacterDead");
+        }
+        return true;
     }
 }

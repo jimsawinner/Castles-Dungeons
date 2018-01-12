@@ -129,7 +129,7 @@ public class GameGUI extends JFrame
      */
     private void updateHealthLabel()
     {
-        String health = Integer.toString(g1.player1.getHp());
+        String health = Integer.toString(g1.player1.getHealthPoints());
         String maxHealth = Integer.toString(g1.player1.getMaxHp());
         JLabel healthLabel = (JLabel) components.get("healthLabel");
         healthLabel.setText("Health: "+health+"/"+maxHealth);
