@@ -95,7 +95,7 @@ public class Game
     
     private void addCharacterToGame(Point location, Character character)
     {
-        map.getLocationByPoint(location).addNPC("hostage", character);
+        map.getLocationByPoint(location).addNPC("princess", character);
     }
     
     public int decrementHostages()

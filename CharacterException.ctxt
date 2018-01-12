@@ -1,0 +1,6 @@
+#BlueJ class context
+comment0.target=CharacterException
+comment0.text=\n\ My\ custom\ exception\ class.\n
+comment1.params=message
+comment1.target=CharacterException(java.lang.String)
+numComments=2

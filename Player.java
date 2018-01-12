@@ -57,34 +57,59 @@ public class Player extends Char
         return true;
     }
     
-    public boolean freeHostage(String hostageName)
+    public boolean freeHostage(String hostageName) throws CharacterException
     {
         if(getCurrentPosition().hasNpc(hostageName)){
             if(hasItem("key")){
-                getCurrentPosition().removeNPC(hostageName);
-                removeItem("key");
+                if(getCurrentPosition().getNPC(hostageName).getCharType() == CharacterType.PRINCESS){
+                    getCurrentPosition().removeNPC(hostageName);
+                    removeItem("key");
+                }else{
+                    throw new CharacterException("Unable to free "+hostageName);
+                }
             }else{
-                return false;
+                throw new CharacterException("Find a key!");
             }
         }else{
-            return false;
+            throw new CharacterException("NPC Doesnt Exist!");
         }
         return true;
     }
     
-    public boolean useItem(String itemName)
+    public boolean useItem(String itemName) throws InventoryException
     {
         if(!this.hasItem(itemName)){
-            return false;
+            throw new InventoryException("You do not have that item to use");
         }else{
-            this.hp = this.hp + getItem(itemName).getHealthPoints();
-            if(this.hp > maxHp){
-                this.hp = maxHp;
+            switch(itemName){
+                case "ether":
+                    this.hp = this.hp + getItem(itemName).getHealthPoints();
+                    if(this.hp > maxHp){
+                        this.hp = maxHp;
+                    }
+                    break;
+                case "coin":
+                    this.getCurrentPosition().unlockExits();
+                    break;
+                default:
+                    throw new InventoryException("You cannot find a way to use this item here");
             }
         }
         
         this.removeItem(itemName);
         
         return true;
+    }
+    
+    public boolean attack(String opponentName)
+    {
+        this.getCurrentPosition().getNPC(opponentName);
+        
+        return true;
+    }
+    
+    public boolean isLockedIn()
+    {
+        return this.getCurrentPosition().isLocked();
     }
 }

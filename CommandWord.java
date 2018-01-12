@@ -17,6 +17,7 @@ public enum CommandWord
     LOOK("look"), 
     UNKNOWN("?"),
     USE("use"),
+    ATTACK("attack"),
     FREE("free");
     
     // The command string.

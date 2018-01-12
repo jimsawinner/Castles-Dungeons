@@ -40,4 +40,9 @@ public class Character extends Char
     public int getHealthPoints() {
         return this.hp;
     }
+    
+    public CharacterType getCharType()
+    {
+        return this.charType;
+    }
 }

@@ -73,6 +73,7 @@ public class GameGUI extends JFrame
         
         updateAllLabels();
         updateLocationLabel();
+        updateLocationInfoLabel("");
         updateHostagesLabel("0");
         updateHealthLabel();
         updateStatusLabel("Game Ready");
@@ -166,6 +167,15 @@ public class GameGUI extends JFrame
         
         if(characterArray != null){
             characterList.setListData(characterArray.toArray());
+            for(int i = 0; i < characterArray.toArray().length; i++){
+                switch((String) characterList.getModel().getElementAt(i)){
+                    case "princess":
+                        buttons.get("freeHostage").setEnabled(true);
+                        break;
+                    default:
+                        buttons.get("attack").setEnabled(true);
+                }
+            }
         }else{
             characterList.setListData(nullCharacters);
         }
@@ -178,6 +188,12 @@ public class GameGUI extends JFrame
         
         locationLabel.setText("Location: "+locationText);
         
+    }
+    
+    private void updateLocationInfoLabel(String locationText)
+    {
+        JLabel locationInfoLabel = (JLabel) components.get("locationInfoLabel");
+        locationInfoLabel.setText(locationText);
     }
     
     public void keyPressed(KeyEvent e) {
@@ -208,6 +224,8 @@ public class GameGUI extends JFrame
         buttons.get("E").setEnabled(false);
         buttons.get("S").setEnabled(false);
         buttons.get("W").setEnabled(false);
+        buttons.get("freeHostage").setEnabled(false);
+        buttons.get("attack").setEnabled(false);
         
         ArrayList<String> exits = g1.player1.getCurrentPosition().getExitsFirstChar();
         
@@ -239,6 +257,13 @@ public class GameGUI extends JFrame
         processCommand(command);
         
         LocationType type = g1.player1.getCurrentPosition().getLocationType();
+
+        if(g1.player1.getCurrentPosition().isLocked()){
+            String locationInfoText = "The guard may need bribing try using a coin!";
+            updateLocationInfoLabel(locationInfoText);
+        }else{
+            updateLocationInfoLabel("");
+        }
         
         switch(type){
             case HALL:
@@ -267,6 +292,7 @@ public class GameGUI extends JFrame
                 break;
             case TRAP:
                 changeImageLabel(imageLabel, "images/trapped.png");
+                updateLocationInfoLabel("Trapped! Game Over!");
                 break;
             case BRIDGE:
                 changeImageLabel(imageLabel, "images/bridge.png");
@@ -311,11 +337,12 @@ public class GameGUI extends JFrame
             wantToQuit = true;
         }
         else if (commandWord == CommandWord.USE) {
-            if(g1.player1.useItem(command.getSecondWord())){
+            try{
+                g1.player1.useItem(command.getSecondWord());
                 updateStatusLabel(command.getSecondWord()+" used");
                 updateAllLabels();
-            }else{
-                updateStatusLabel("Cannot use item");
+            }catch(Exception e){
+                updateStatusLabel(e.toString());
             }
         }
         else if (commandWord == CommandWord.FREE) {
@@ -330,7 +357,15 @@ public class GameGUI extends JFrame
                     updateStatusLabel("Find the key!");
                 }
             }catch(Exception e){
-                
+                updateStatusLabel(e.toString());
+            }
+        }
+        else if (commandWord == CommandWord.ATTACK) {
+            try{
+                g1.player1.attack(command.getSecondWord());
+                updateStatusLabel("Attacked: "+command.getSecondWord());
+            }catch(Exception e){
+                updateStatusLabel(e.toString());
             }
         }
         
@@ -341,17 +376,14 @@ public class GameGUI extends JFrame
     private void setup()
     {
         this.setTitle("Castles & Dungeons Zuul Project");
-        this.getContentPane().setLayout(new GridLayout(10,10));
+        this.getContentPane().setLayout(new GridLayout(20,20));
         this.setSize(800, 600);   
         
         Container pane = this.getContentPane();
-        //JPanel p = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         
         JButton button;
         pane.setLayout(new GridBagLayout());
-        //GridBagConstraints c = new GridBagConstraints();
-        
 
         // natural height, maximum width
         c.fill = GridBagConstraints.HORIZONTAL;
@@ -421,9 +453,17 @@ public class GameGUI extends JFrame
         pane.add(locationLabel, c);
         components.put("locationLabel", locationLabel);
         
-        JLabel hostageLabel = new JLabel("Hostages Saved: ");
+        JLabel locationInfoLabel = new JLabel("");
         c.gridx = 3;
         c.gridy = 2;
+        //label.setFont(new Font("Sans-Serif"));
+        
+        pane.add(locationInfoLabel, c);
+        components.put("locationInfoLabel", locationInfoLabel);
+        
+        JLabel hostageLabel = new JLabel("Hostages Saved: ");
+        c.gridx = 3;
+        c.gridy = 3;
         //label.setFont(new Font("Sans-Serif"));
         
         pane.add(hostageLabel, c);
@@ -431,7 +471,7 @@ public class GameGUI extends JFrame
         
         JLabel healthLabel = new JLabel("Health: ");
         c.gridx = 3;
-        c.gridy = 3;
+        c.gridy = 4;
         //label.setFont(new Font("Sans-Serif"));
         
         pane.add(healthLabel, c);
@@ -445,15 +485,15 @@ public class GameGUI extends JFrame
         //c.ipady = 100;
         //c.ipadx = 100;
         c.weightx = 0.0;
-        c.gridwidth = 10;
+        c.gridwidth = 0;
         c.gridx = 0;
-        c.gridy = 4;
+        c.gridy = 5;
         pane.add(imageLabel, c);
     
         
         label = new JLabel("Inventory");
         c.gridx = 0; // first column
-        c.gridy = 5; // fifth row
+        c.gridy = 6; // fifth row
         c.insets = new Insets(0, 10, 0, 0); // left padding
         c.gridwidth = 3; // 3 columns wide
         
@@ -462,7 +502,7 @@ public class GameGUI extends JFrame
         String[] inventory = { };
         
         c.gridx = 0; // first column
-        c.gridy = 6; // sixth row
+        c.gridy = 7; // sixth row
         JList list = new JList(inventory);
         
         pane.add(list, c);
@@ -470,12 +510,13 @@ public class GameGUI extends JFrame
         
         button = new JButton("Use");
         c.gridx = 0;
-        c.gridy = 7;
+        c.gridy = 8;
         c.gridwidth = 1; // 3 columns wide
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) 
             {
-                processGameAction("use ether");
+                JList selected = (JList) components.get("inventory");
+                processGameAction("use "+selected.getSelectedValue());
             }
         });
         pane.add(button, c);
@@ -483,7 +524,7 @@ public class GameGUI extends JFrame
         
         label = new JLabel("Room Items");
         c.gridx = 3; // fourth column
-        c.gridy = 5; // fifth row
+        c.gridy = 6; // fifth row
         c.gridwidth = 3; // 3 columns wide
         
         pane.add(label, c); 
@@ -492,14 +533,14 @@ public class GameGUI extends JFrame
         
         // setup location on pane
         c.gridx = 3; // 4th column
-        c.gridy = 6; // sixth row
+        c.gridy = 7; // sixth row
         
         pane.add(list2, c);
         components.put("locationItems", list2);
         
         label = new JLabel("Players Here");
         c.gridx = 6; // seventh column
-        c.gridy = 5; // fifth row
+        c.gridy = 6; // fifth row
         c.gridwidth = 3; // 3 columns wide
         
         pane.add(label, c); 
@@ -509,7 +550,7 @@ public class GameGUI extends JFrame
         
         // setup location on pane
         c.gridx = 6; // 4th column
-        c.gridy = 6; // sixth row
+        c.gridy = 7; // sixth row
         c.gridwidth = 3; // 3 columns wide
         
         pane.add(list3, c);
@@ -517,16 +558,31 @@ public class GameGUI extends JFrame
         
         button = new JButton("Free Hostage");
         c.gridx = 6;
-        c.gridy = 7;
+        c.gridy = 8;
         c.gridwidth = 3; // 3 columns wide
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) 
             {
-                processGameAction("free hostage");
+                JList selected = (JList) components.get("characterList");
+                processGameAction("free "+selected.getSelectedValue());
             }
         });
         pane.add(button, c);
         buttons.put("freeHostage", button);
+        
+        button = new JButton("Attack");
+        c.gridx = 6;
+        c.gridy = 9;
+        c.gridwidth = 3; // 3 columns wide
+        button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) 
+            {
+                JList selected = (JList) components.get("characterList");
+                processGameAction("attack "+selected.getSelectedValue());
+            }
+        });
+        pane.add(button, c);
+        buttons.put("attack", button);
         
         
         // add a status label (to fill the space)
@@ -534,7 +590,7 @@ public class GameGUI extends JFrame
         c.weighty = 1.0; // request any extra vertical space
         c.anchor = GridBagConstraints.PAGE_END; // bottom of space
         c.gridx = 0; // 0 being the first in a 10x10
-        c.gridy = 9; // 9 being the last in a 10x10
+        c.gridy = 10; // 9 being the last in a 10x10
         c.gridwidth = 10; // take up the whole bottom row
         c.insets = new Insets(0, 0, 0, 0); // reset left padding
         

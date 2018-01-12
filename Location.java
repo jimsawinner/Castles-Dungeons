@@ -28,6 +28,8 @@ public class Location
     private HashMap<String, Item> items;
     private HashMap<String, Character> npcs;
 
+    private boolean locked;
+
     /**
      * Create a room described "description". Initially, it has
      * no exits. "description" is something like "a kitchen" or
@@ -39,9 +41,14 @@ public class Location
         this.type = type;
         this.description = description;
         this.point = point;
+        this.locked = false;
         exits = new HashMap<String, Location>();
         items = new HashMap<String, Item>();
         npcs = new HashMap<String, Character>();
+        
+        if(type == LocationType.GUARDED){
+            this.locked = true;
+        }
     }
 
     /**
@@ -72,6 +79,7 @@ public class Location
     public String getLongDescription()
     {
         String locationMessage = "You are " + description + ".\n At Position: " + point.getX() + "," + point.getY() + "\n";
+        locationMessage += " the guards may need bribing";
         return locationMessage;
         
     }
@@ -151,6 +159,10 @@ public class Location
         
         String returnString = "Exits:";
         Set<String> keys = exits.keySet();
+        
+        if(this.locked){
+            return exitChars;
+        }
         
         for(String exit : keys) {
             switch(exit) {
@@ -249,6 +261,11 @@ public class Location
         npcs.put(name, character);
     }
     
+    public Character getNPC(String name)
+    {
+        return npcs.get(name);
+    }
+    
     public void removeNPC(String name)
     {
         npcs.remove(name);
@@ -261,6 +278,23 @@ public class Location
     public boolean hasNPCs()
     {
         return !npcs.isEmpty();
+    }
+    
+    public boolean unlockExits()
+    {
+        this.locked = false;
+        return true;
+    }
+    
+    public boolean lockExits()
+    {
+        this.locked = true;
+        return true;
+    }
+    
+    public boolean isLocked()
+    {
+        return this.locked;
     }
     
     /**
