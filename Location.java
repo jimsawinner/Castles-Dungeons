@@ -251,6 +251,15 @@ public class Location
         npcs.put(name, character);
     }
     
+    public void removeNPC(String name)
+    {
+        npcs.remove(name);
+    }
+    
+    public boolean hasNpc(String k){
+        return npcs.containsKey(k);
+    }
+    
     /**
      * Returns the HashMap of NPC's at this location
      * 

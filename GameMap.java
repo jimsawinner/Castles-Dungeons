@@ -64,7 +64,7 @@ public class GameMap
         createPointOnMap(0,0,"in a store room", LocationType.STORE);
         createPointOnMap(0,-2,"standing in the grand entrance", LocationType.ENTRANCE);
         createPointOnMap(0,-3,"standing on the entrance bridge", LocationType.BRIDGE);
-        createPointOnMap(0,-4,"standing at bridge gates", LocationType.BRIDGE);
+        createPointOnMap(0,-4,"standing at bridge gates", LocationType.BRIDGEGATE);
 
         createPointOnMap(1,-4,"rummaging through forest", LocationType.OUTSIDE);
         createPointOnMap(2,-4,"rummaging through forest", LocationType.OUTSIDE);
@@ -126,35 +126,37 @@ public class GameMap
     {
         // Iterate through the coordinates HashMap to check/add exits
         for (Point key : coords.keySet()) {
-            
-            // if the HashMap contains a key with a point with an x value of this points x value + 1
-            if(coords.containsKey(new Point((int)key.getX()+1,(int)key.getY()))){
-                // there is a location to the east (set an exit?)
-                Point neighbourPoint = new Point((int)key.getX()+1,(int)key.getY());
+            if(getLocationByPoint(key).getLocationType() != LocationType.TRAP){
                 
-                // set exits to the east
-                getLocationByPoint(key).setExit("east", getLocationByPoint(neighbourPoint));
-            }
-            
-            if(coords.containsKey(new Point((int)key.getX()-1,(int)key.getY()))){
-                Point neighbourPoint = new Point((int)key.getX()-1,(int)key.getY());
+                // if the HashMap contains a key with a point with an x value of this points x value + 1
+                if(coords.containsKey(new Point((int)key.getX()+1,(int)key.getY()))){
+                    // there is a location to the east (set an exit?)
+                    Point neighbourPoint = new Point((int)key.getX()+1,(int)key.getY());
+                    
+                    // set exits to the east
+                    getLocationByPoint(key).setExit("east", getLocationByPoint(neighbourPoint));
+                }
                 
-                // there is a location to the west (set an exit?)                
-                getLocationByPoint(key).setExit("west", getLocationByPoint(neighbourPoint));
-            }
-            
-            if(coords.containsKey(new Point((int)key.getX(),(int)key.getY()+1))){
-                Point neighbourPoint = new Point((int)key.getX(),(int)key.getY()+1);
+                if(coords.containsKey(new Point((int)key.getX()-1,(int)key.getY()))){
+                    Point neighbourPoint = new Point((int)key.getX()-1,(int)key.getY());
+                    
+                    // there is a location to the west (set an exit?)                
+                    getLocationByPoint(key).setExit("west", getLocationByPoint(neighbourPoint));
+                }
                 
-                // there is a location to the north (set an exit?)                
-                getLocationByPoint(key).setExit("north", getLocationByPoint(neighbourPoint));
-            }
-            
-            if(coords.containsKey(new Point((int)key.getX(),(int)key.getY()-1))){
-                Point neighbourPoint = new Point((int)key.getX(),(int)key.getY()-1);
+                if(coords.containsKey(new Point((int)key.getX(),(int)key.getY()+1))){
+                    Point neighbourPoint = new Point((int)key.getX(),(int)key.getY()+1);
+                    
+                    // there is a location to the north (set an exit?)                
+                    getLocationByPoint(key).setExit("north", getLocationByPoint(neighbourPoint));
+                }
                 
-                // there is a location to the west (set an exit?)                
-                getLocationByPoint(key).setExit("south", getLocationByPoint(neighbourPoint));
+                if(coords.containsKey(new Point((int)key.getX(),(int)key.getY()-1))){
+                    Point neighbourPoint = new Point((int)key.getX(),(int)key.getY()-1);
+                    
+                    // there is a location to the west (set an exit?)                
+                    getLocationByPoint(key).setExit("south", getLocationByPoint(neighbourPoint));
+                }
             }
         }
         

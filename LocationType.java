@@ -19,6 +19,7 @@ public enum LocationType
     GUARDED,
     ROOM,
     DUNGEON,
-    BEDROOM
+    BEDROOM,
+    BRIDGEGATE,
     
 }

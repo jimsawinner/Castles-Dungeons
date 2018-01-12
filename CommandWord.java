@@ -15,7 +15,8 @@ public enum CommandWord
     PICK("take"), 
     DROP("drop"), 
     LOOK("look"), 
-    UNKNOWN("?");
+    UNKNOWN("?"),
+    FREE("free");
     
     // The command string.
     private String commandString;

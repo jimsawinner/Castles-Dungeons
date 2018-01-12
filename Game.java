@@ -23,11 +23,10 @@ import java.awt.Point;
 
 public class Game 
 {
-    private Parser parser;
-    //private Room currentRoom;
     public Player player1;
     //private HashMap<String, Location> map;
     private GameMap map;
+    private int hostages;
     
     Logger logger = Logger.getLogger("GameLog");  
     FileHandler fh;  
@@ -62,37 +61,18 @@ public class Game
         }  
         
         player1 = new Player();
-        parser = new Parser();
         map = new GameMap();
         
         player1.setCurrentPosition(map.getLocationByPoint(new Point(2,-4)));  // start game outside
         
-        addCharacterToGame(); // add a princess to the game
-    }
-
-    public void takeItem(Command command)
-    {
-        if(!command.hasSecondWord()) {
-            // if there is no second word, we don't know what to take...
-            System.out.println("Take what?");
-            return;
-        }
-        
-        String itemName = command.getSecondWord();
-        
-        try{
-            player1.takeItem(itemName);
-            System.out.println("Picked up "+itemName);
-            log("Player obtained item: "+itemName, "info");
-        }
-        catch (Exception e){
-            System.out.println("Error Picking up item");
-            System.out.println(e);
-        }
+        addCharacterToGame(new Point(-6, 7), new Character(CharacterType.PRINCESS)); // add a princess to the game
+        addCharacterToGame(new Point(-4, 7), new Character(CharacterType.PRINCESS)); // add a princess to the game
+        addCharacterToGame(new Point(4, 7), new Character(CharacterType.PRINCESS)); // add a princess to the game
+        addCharacterToGame(new Point(6, 7), new Character(CharacterType.PRINCESS)); // add a princess to the game
+        hostages = 4;
     }
     
 
-    
     /**
      * Logging Method
      * 
@@ -113,8 +93,15 @@ public class Game
             }
     }
     
-    private void addCharacterToGame()
+    private void addCharacterToGame(Point location, Character character)
     {
-        map.getLocationByPoint(new Point(4,7)).addNPC("Princess", new Character(CharacterType.PRINCESS));  // start game outside
+        map.getLocationByPoint(location).addNPC("hostage", character);
+    }
+    
+    public int decrementHostages()
+    {
+        hostages = hostages-1;
+        
+        return hostages;
     }
 }

@@ -53,15 +53,25 @@ public class GameGUI extends JFrame
         checkAndEnableButtons();
         checkAndPopulateInventoryList();
         updateLocationLabel();
+        updateHostagesLabel("0");
         updateStatusLabel("Game Ready");
         
         g1.log("Game Ready", "info");
+        
+        //HelpGUI help = new HelpGUI();
+        
     }
     
     private void updateStatusLabel(String label)
     {
         JLabel statusLabel = (JLabel) components.get("statusLabel");
         statusLabel.setText("Status: "+label);
+    }
+    
+    private void updateHostagesLabel(String amount)
+    {
+        JLabel hostagesLabel = (JLabel) components.get("hostageLabel");
+        hostagesLabel.setText("Hostages Saved: "+amount+"/4");
     }
     
     
@@ -169,7 +179,7 @@ public class GameGUI extends JFrame
             case OUTSIDE:
                 changeImageLabel(imageLabel, "images/forest.png");
                 break;
-            case BRIDGE:
+            case BRIDGEGATE:
                 changeImageLabel(imageLabel, "images/bridge-gates.png");
                 break;
             case TUNNEL:
@@ -184,7 +194,15 @@ public class GameGUI extends JFrame
             case GUARDED:
                 changeImageLabel(imageLabel, "images/guard.png");
                 break;
-
+            case ENTRANCE:
+                changeImageLabel(imageLabel, "images/entrance.png");
+                break;
+            case TRAP:
+                changeImageLabel(imageLabel, "images/trapped.png");
+                break;
+            case BRIDGE:
+                changeImageLabel(imageLabel, "images/bridge.png");
+                break;
         }
         
         checkAndEnableButtons();
@@ -221,6 +239,22 @@ public class GameGUI extends JFrame
         else if (commandWord == CommandWord.QUIT) {
             //System.exit(0);
             wantToQuit = true;
+        }
+        else if (commandWord == CommandWord.FREE) {
+            //System.exit(0);
+            try{
+                if(g1.player1.freeHostage(command.getSecondWord())){
+                    int freed = (int) g1.decrementHostages();
+                    freed = 4 - freed;
+                    
+                    updateHostagesLabel(""+freed);
+                    updateStatusLabel("Hostage Freed");
+                }else{
+                    updateStatusLabel("Find the key!");
+                }
+            }catch(Exception e){
+                
+            }
         }
         else if (commandWord == CommandWord.LOOK) {
             if(!command.hasSecondWord()){
@@ -324,10 +358,16 @@ public class GameGUI extends JFrame
         pane.add(locationLabel, c);
         components.put("locationLabel", locationLabel);
         
+        JLabel hostageLabel = new JLabel("Hostages Saved: ");
+        c.gridx = 9;
+        c.gridy = 2;
+        //label.setFont(new Font("Sans-Serif"));
+        
+        pane.add(hostageLabel, c);
+        components.put("hostageLabel", hostageLabel);
+        
         // controls panel
         Image dimg = loadImage("images/forest.png").getScaledInstance(800, 200, Image.SCALE_SMOOTH);
-        
-        //JLabel imageLabel = new JLabel(new ImageIcon(dimg));
         
         imageLabel.setIcon(new ImageIcon(dimg));
 
@@ -341,47 +381,77 @@ public class GameGUI extends JFrame
     
         
         label = new JLabel("Inventory");
-        c.gridx = 0;
-        c.gridy = 5;
+        c.gridx = 0; // first column
+        c.gridy = 5; // fifth row
         c.insets = new Insets(0, 10, 0, 0); // left padding
         c.gridwidth = 3; // 3 columns wide
         
-        pane.add(label, c);  
-        
-        label = new JLabel("Room Inventory");
-        c.gridx = 4;
-        c.gridy = 5;
-        c.gridwidth = 3; // 3 columns wide
-        
-        //label = new JLabel("Room Items");
-        //c.weightx = 1.0; // request any extra horizontal space
-        //c.gridx = 3; // over to the right
-        //c.gridy = 5;
-        
         pane.add(label, c); 
         
-        //c.ipady = 0; // reset to default
-
-        //c.insets = new Insets(0, 0, 10, 0); // top padding
-        c.gridx = 0; // aligned with button 2
-        //c.gridwidth = 1; // 2 columns wide
-        c.gridy = 6; // third row
-        
         String[] inventory = { };
+        
+        c.gridx = 0; // first column
+        c.gridy = 6; // sixth row
         JList list = new JList(inventory);
         
         pane.add(list, c);
         components.put("inventory", list);
         
+        label = new JLabel("Room Items");
+        c.gridx = 4; // fourth column
+        c.gridy = 5; // fifth row
+        c.gridwidth = 3; // 3 columns wide
+        
+        pane.add(label, c); 
+        
         JList list2 = new JList(inventory);
         
-        c.gridx = 4; // left
-        c.gridwidth = 3; // 3 columns wide
+        // setup location on pane
+        c.gridx = 4; // 4th column
         c.gridy = 6; // sixth row
-        c.insets = new Insets(0, 10, 0, 0); // left padding
         
         pane.add(list2, c);
         components.put("locationItems", list2);
+        
+        label = new JLabel("Players Here");
+        c.gridx = 7; // seventh column
+        c.gridy = 5; // fifth row
+        c.gridwidth = 3; // 3 columns wide
+        
+        pane.add(label, c); 
+        
+        String[] characters = { "1", "2" };
+        JList list3 = new JList(characters);
+        
+        // setup location on pane
+        c.gridx = 7; // 4th column
+        c.gridy = 6; // sixth row
+        
+        pane.add(list3, c);
+        components.put("charactersList", list3);
+        
+        button = new JButton("Free Hostage");
+        c.gridx = 7;
+        c.gridy = 7;
+        button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) 
+            {
+                processGameAction("free hostage");
+            }
+        });
+        pane.add(button, c);
+        buttons.put("freeHostage", button);
+        
+        // setup location on pane
+        c.gridx = 4; // 4th column
+        c.gridy = 6; // sixth row
+        // setup location on pane
+        c.gridx = 4; // 4th column
+        c.gridy = 6; // sixth row
+        
+        pane.add(list2, c);
+        components.put("locationItems", list2);
+        
         
         // add a status label (to fill the space)
         label = new JLabel("Status: ");
@@ -513,6 +583,19 @@ public class GameGUI extends JFrame
         
         // add to the menu bar
         menuBar.add(menu);
+        
+        menuItem = new JMenuItem("Show Help", KeyEvent.VK_T);
+        menuItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) 
+            {
+                HelpGUI help = new HelpGUI();
+            }
+        });
+        
+        // add show help to menu option
+        menu.add(menuItem);
+        
+
         
         this.setJMenuBar(menuBar);
     }

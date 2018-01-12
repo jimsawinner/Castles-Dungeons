@@ -1,0 +1,12 @@
+#BlueJ class context
+comment0.target=HelpGUI
+comment0.text=\n\ Write\ a\ description\ of\ class\ HelpGUI\ here.\n\n\ @author\ (your\ name)\n\ @version\ (a\ version\ number\ or\ a\ date)\n
+comment1.params=
+comment1.target=HelpGUI()
+comment1.text=\n\ Constructor\ for\ objects\ of\ class\ HelpGUI\n
+comment2.params=
+comment2.target=void\ setup()
+comment3.params=filename
+comment3.target=java.awt.image.BufferedImage\ loadImage(java.lang.String)
+comment3.text=\n\ A\ method\ to\ load\ an\ image\ from\ file\n\ \n\ \n
+numComments=4
