@@ -205,25 +205,22 @@ public class GameGUI extends JFrame
         CommandWord commandWord = command.getCommandWord();
 
         if(commandWord == CommandWord.UNKNOWN) {
-            System.out.println("I don't know what you mean...");
+            updateStatusLabel("Unknown Command");
             return false;
         }
         
-        if (commandWord == CommandWord.HELP) {
-            //g1.printHelp();
-        }
-        else if (commandWord == CommandWord.GO) {
-            g1.goToLocation(command);
+        if (commandWord == CommandWord.GO) {
+            String direction = command.getSecondWord();
+            
+            if(g1.player1.move(direction)){
+                updateStatusLabel(g1.player1.getCurrentPosition().getLongDescription());
+            }else{
+                updateStatusLabel("There is no door!");
+            }
         }
         else if (commandWord == CommandWord.QUIT) {
             //System.exit(0);
             wantToQuit = true;
-        }
-        else if (commandWord == CommandWord.PICK) {
-            g1.takeItem(command);
-        }
-        else if (commandWord == CommandWord.DROP) {
-            g1.dropItem(command);
         }
         else if (commandWord == CommandWord.LOOK) {
             if(!command.hasSecondWord()){
@@ -409,8 +406,17 @@ public class GameGUI extends JFrame
                     int index = theList.locationToIndex(mouseEvent.getPoint());
                     if (index >= 0) {
                         Object o = theList.getModel().getElementAt(index);
-                        System.out.println("Double-clicked on: " + o.toString());
-                        g1.player1.dropItem(o.toString());
+                        String itemName = o.toString();
+                        try{
+                            if(g1.player1.dropItem(itemName)){
+                                updateStatusLabel("Dropped "+itemName);
+                                g1.log("Player dropped item: "+itemName, "info");
+                            }else{
+                                System.out.println("No " +itemName+ " in inventory.");
+                            }
+                        }catch(Exception e){
+                            updateStatusLabel(e.toString());
+                        }
                         checkAndPopulateInventoryList();
                     }
                 }
@@ -424,13 +430,18 @@ public class GameGUI extends JFrame
                     int index = theList.locationToIndex(mouseEvent.getPoint());
                     if (index >= 0) {
                         Object o = theList.getModel().getElementAt(index);
-                        System.out.println("Double-clicked on: " + o.toString());
+                        String itemName = o.toString();
                         try{
-                            g1.player1.takeItem(o.toString());
-                            checkAndPopulateInventoryList();
+                            if(g1.player1.takeItem(itemName)){
+                                updateStatusLabel("Picked up "+itemName);
+                                g1.log("Player picked up item: "+itemName, "info");
+                            }else{
+                                System.out.println("No " +itemName+ " in room.");
+                            }
                         }catch(Exception e){
                             updateStatusLabel(e.toString());
                         }
+                        checkAndPopulateInventoryList();
                     }
                 }
             }

@@ -2,7 +2,7 @@ import java.util.Set;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Random;
+
 import java.awt.Point;
 
 /**
@@ -42,30 +42,6 @@ public class Location
         exits = new HashMap<String, Location>();
         items = new HashMap<String, Item>();
         npcs = new HashMap<String, Character>();
-        
-        Random rand = new Random();
-        
-        // Dont add characters or items in certain locations
-        if(type != LocationType.OUTSIDE && type != LocationType.TRAP && type != LocationType.DUNGEON){
-            // Give a 50% chance of this location gaining an item
-            float chance = rand.nextFloat();
-            if (chance <= 0.25f) {
-                addItem("ether", new Item("Health  boost.", 0, 10));
-            } else if (chance <= 0.50f){
-                addItem("coin", new Item("A gold coin.", 0, 50));
-            } else if (chance <= 0.80f){
-                addItem("key", new Item("A key.", 0, 50));
-            }
-            
-            chance = rand.nextFloat();
-            if(chance <= 0.20f) {
-                addNPC("Dragon", new Character(CharacterType.DRAGON));
-            }
-            
-            if(chance <= 0.40f) {
-                addNPC("Witch", new Character(CharacterType.WITCH));
-            }
-        }
     }
 
     /**

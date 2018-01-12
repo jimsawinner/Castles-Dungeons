@@ -69,28 +69,6 @@ public class Game
         
         addCharacterToGame(); // add a princess to the game
     }
-    
-    /** 
-     * Try to go to one direction. If there is an exit, enter the new
-     * room, otherwise print an error message.
-     */
-    public void goToLocation(Command command) 
-    {
-        if(!command.hasSecondWord()) {
-            // if there is no second word, we don't know where to go...
-            System.out.println("Go where?");
-            return;
-        }
-
-        String direction = command.getSecondWord();
-        
-        if(player1.move(direction)){
-            System.out.println("Moved");
-            System.out.println(player1.getCurrentPosition().getLongDescription());
-        }else{
-            System.out.println("There is no door!");
-        }
-    }
 
     public void takeItem(Command command)
     {
@@ -113,23 +91,7 @@ public class Game
         }
     }
     
-    public void dropItem(Command command)
-    {
-        if(!command.hasSecondWord()) {
-            // if there is no second word, we don't know what to take...
-            System.out.println("Drop what?");
-            return;
-        }
-        
-        String itemName = command.getSecondWord();
-        
-        if(player1.dropItem(itemName)){
-            System.out.println("Dropped "+itemName);
-            log("Player dropped item: "+itemName, "info");
-        }else{
-            System.out.println("No " +itemName+ " in inventory.");
-        }
-    }
+
     
     /**
      * Logging Method

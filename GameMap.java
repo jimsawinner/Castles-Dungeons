@@ -1,5 +1,6 @@
 import java.util.HashMap;
 import java.awt.Point;
+import java.util.Random;
 
 /**
  * Responsible for coordinating players/locations
@@ -177,7 +178,32 @@ public class GameMap
         if(coords.containsKey(thisPoint)){
             return false;
         }else{
-            coords.put(new Point(xPos,yPos), new Location(description, type, thisPoint));
+            Location newLocation = new Location(description, type, thisPoint);
+            Random rand = new Random();
+        
+            // Dont add characters or items in certain locations
+            if(type != LocationType.OUTSIDE && type != LocationType.TRAP && type != LocationType.DUNGEON){
+                // Give a 50% chance of this location gaining an item
+                float chance = rand.nextFloat();
+                
+                if (chance <= 0.25f) {
+                    newLocation.addItem("ether", new Item("Health  boost.", 0, 10));
+                } else if (chance <= 0.50f){
+                    newLocation.addItem("coin", new Item("A gold coin.", 0, 50));
+                } else if (chance <= 0.80f){
+                    newLocation.addItem("key", new Item("A key.", 0, 50));
+                }
+                
+                chance = rand.nextFloat();
+                if(chance <= 0.20f) {
+                    newLocation.addNPC("Dragon", new Character(CharacterType.DRAGON));
+                }
+                
+                if(chance <= 0.40f) {
+                    newLocation.addNPC("Witch", new Character(CharacterType.WITCH));
+                }
+            }            
+            coords.put(new Point(xPos,yPos), newLocation);
             return true;
         }
     }
