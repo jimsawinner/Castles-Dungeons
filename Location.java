@@ -79,7 +79,6 @@ public class Location
     public String getLongDescription()
     {
         String locationMessage = "You are " + description + ".\n At Position: " + point.getX() + "," + point.getY() + "\n";
-        locationMessage += " the guards may need bribing";
         return locationMessage;
         
     }
